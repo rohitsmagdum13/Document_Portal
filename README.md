@@ -1,30 +1,15 @@
-# Complete Project Setup Guide
+# Document Portal
 
-This guide covers two scenarios: setting up a new project from scratch and working with an existing project from GitHub.
+## Installation & Setup
 
-## Option A: Clone Existing Project
-
-If you're working with the Document Portal project:
+### 1. Clone the Repository
 
 ```bash
-# Clone the repository
 git clone https://github.com/rohitsmagdum13/Document_Portal.git
-
-# Navigate to the project directory
 cd Document_Portal
 ```
 
-## Option B: Create New Project
-
-If you're starting a new project:
-
-```bash
-# Create project directory
-mkdir <project_folder_name>
-cd <project_folder_name>
-```
-
-## 2. Set Up Conda Virtual Environment
+### 2. Set Up Conda Virtual Environment
 
 ```bash
 # Create virtual environment with Python 3.10
@@ -34,64 +19,76 @@ conda create -p venv python=3.10 -y
 conda activate venv/
 ```
 
-**Note:** When using `-p venv`, activate with `conda activate venv/` (with trailing slash)
-
-## 3. Install Dependencies
+### 3. Install Dependencies
 
 ```bash
-# Install from requirements.txt (make sure this file exists in your project root)
 pip install -r requirements.txt
 ```
 
-If `requirements.txt` doesn't exist, create one with your dependencies:
-```bash
-pip freeze > requirements.txt
-```
+### 4. Environment Configuration
 
-## 4. Git Setup (for new projects only)
-
-If you created a new project (Option B), initialize Git:
+Create a `.env` file in your project root:
 
 ```bash
-# Initialize Git repository
-git init
+# LLM API Keys (choose one or more)
+GROQ_API_KEY=your_groq_api_key
+OPENAI_API_KEY=your_openai_api_key
+GEMINI_API_KEY=your_gemini_api_key
+CLAUDE_API_KEY=your_claude_api_key
+HUGGINGFACE_API_KEY=your_hf_api_key
 
-# Add all files to staging
-git add .
-
-# Make initial commit
-git commit -m "Initial project setup"
-
-# Add remote origin (replace with your repository URL)
-git remote add origin <your_repository_url>
-
-# Push to remote repository
-git push -u origin main
+# Vector Database Configuration
+PINECONE_API_KEY=your_pinecone_key
+PINECONE_ENVIRONMENT=your_pinecone_env
+WEAVIATE_URL=your_weaviate_url
+QDRANT_URL=your_qdrant_url
 ```
 
-## 5. Verify Setup
+## Minimum Requirements
 
-```bash
-# Check Python version
-python --version
+### 1. LLM Models
+Choose one of the following:
 
-# Check installed packages
-pip list
+- **Groq** (Free) - Fast inference API
+- **OpenAI** (Paid) - GPT-3.5/GPT-4 models
+- **Gemini** (15 days free access) - Google's LLM
+- **Claude** (Paid) - Anthropic's AI assistant
+- **Hugging Face** (Free) - Open source models
+- **Ollama** (Local setup) - Run models locally
 
-# Check Git status
-git status
-```
+### 2. Embedding Models
+Select an embedding model:
 
-## Additional Notes
+- **OpenAI Embeddings** - text-embedding-ada-002
+- **Hugging Face Embeddings** - sentence-transformers models
+- **Gemini Embeddings** - Google's embedding API
 
-- Replace `<project_folder_name>` with your actual project name
-- Replace `<your_repository_url>` with your GitHub repository URL
-- For the Document Portal project, the repository is already set up, so skip the Git initialization steps
+### 3. Vector Database Options
+
+#### In-Memory
+- **FAISS** - Fast similarity search
+- **Chroma** - Simple in-memory vector store
+- **Numpy/Pandas** - Basic array operations
+
+#### On-Disk
+- **FAISS with persistence** - Save/load indices
+- **Chroma with persistence** - Local file storage
+- **SQLite with vector extensions**
+
+#### Cloud-Based
+- **Pinecone** - Managed vector database
+- **Weaviate** - Open source, cloud deployment
+- **Qdrant** - High-performance vector search
+- **MongoDB Atlas Vector Search**
+- **PostgreSQL with pgvector**
+
+## Notes
+
+- Add your `.env` file to `.gitignore` to keep API keys secure
 - Always ensure your virtual environment is activated before installing packages or running the project
 
 ## Deactivating Environment
 
-When you're done working:
 ```bash
 conda deactivate
 ```
