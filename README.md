@@ -37,7 +37,7 @@ A document processing and Q&A portal built with LangChain, FastAPI, and Streamli
   | PyMuPDF                | 1.26.3         | PDF parsing                    |
   | pypdf                  | 5.8.0          | PDF reading                    |
   | docx2txt               | 0.9            | DOCX file text extraction      |
-  | structlog              | 25.4.0         | Structured logging             |
+  | loguru                | 0.7.3          | Logging utility                |
   | streamlit              | 1.47.1         | Frontend UI                    |
   | ipykernel              | 6.30.0         | Jupyter notebook support       |
   | pytest                 | 8.4.1          | Testing framework              |

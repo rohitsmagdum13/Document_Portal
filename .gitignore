@@ -8,5 +8,43 @@ wheels/
 
 # Virtual environments
 .venv
+venv/
+.envrc
 
 .env
+logs/
+
+# Python tooling caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.pyre/
+.pytype/
+.hypothesis/
+
+# Coverage reports
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Type checker / language server
+.pyright/
+
+# IDE/editor settings
+.vscode/
+.idea/
+*.code-workspace
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Local logs and temp files
+*.log
+*.tmp
+*.temp
+
