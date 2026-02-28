@@ -50,6 +50,14 @@ class ExceptionHandler:
         print("[ExceptionHandler] Logging exception.")
         logger.bind(source="exception_handler").error(str(exception))
 
+    def handle_exception(self, message: str, error: Exception) -> None:
+        """Create, log, and raise a DocumentPortalException in one call.
+        Use this anywhere in the project to handle exceptions consistently.
+        """
+        app_exception = self.create_exception(message, error=error)
+        self.log_exception(app_exception)
+        raise app_exception
+
 
 class DocumentPortalException(Exception):
     def __init__(self, message: str, original_error: Exception | None = None):

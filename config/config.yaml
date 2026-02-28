@@ -2,9 +2,19 @@
 # -----------
 # Central configuration for the Document Portal project.
 
-app:
-  name: "Document Portal"
-  version: "0.1.0"
-  debug: true
+faiss_db:
+  collection_name: "document_portal"
 
-# Add your LLM, database, and other settings here
+embedding_model:
+  provider: "openai"
+  model_name: "text-embedding-3-small"
+
+retriever:
+  top_k: 10
+
+llm:
+  openai:
+    provider: "openai"
+    model_name: "gpt-4o-mini"
+    temperature: 0
+    max_output_tokens: 2048

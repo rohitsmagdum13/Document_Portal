@@ -92,6 +92,72 @@ Document_Portal/
 └── streamlit_ui.py           # Streamlit frontend
 ```
 
+### Step 7: Logging Module (`logger/custom_logger.py`)
+
+- Built a **structured JSON logger** using `structlog` + Python `logging`.
+- Logs are written to both **stdout** and a **daily log file** under `logs/`.
+- Logger is configured once (singleton pattern via `_configured` flag) to avoid duplicate handlers.
+- Any module can get its own named logger via:
+  ```python
+  from logger.custom_logger import CustomLogger
+  app_logger = CustomLogger().get_logger(__file__)
+  ```
+
+### Step 8: Exception Handling Module (`exception/custom_exception.py`)
+
+- Built a **class-based exception handler** powered by `loguru`.
+- `ExceptionHandler` — configures Loguru to write to `logs/exceptions.log` + console.
+- `DocumentPortalException` — custom exception that auto-captures the **file name** and **line number** from the traceback.
+- Key methods:
+  | Method | What it does |
+  |---|---|
+  | `create_exception(msg, error)` | Wraps any error into a `DocumentPortalException` |
+  | `log_exception(exception)` | Logs the exception via Loguru |
+  | `handle_exception(msg, error)` | **Reusable one-liner** — creates, logs, and raises in one call |
+
+- `handle_exception()` was added so every module in the project can handle errors consistently without repeating 3 steps:
+  ```python
+  except Exception as error:
+      exception_handler.handle_exception("Something failed.", error=error)
+  ```
+
+### Step 9: Configuration Setup (`config/config.yaml`)
+
+- Created a centralized YAML configuration file with the following sections:
+
+  ```yaml
+  faiss_db:
+    collection_name: "document_portal"
+
+  embedding_model:
+    provider: "openai"
+    model_name: "text-embedding-3-small"
+
+  retriever:
+    top_k: 10
+
+  llm:
+    openai:
+      provider: "openai"
+      model_name: "gpt-4o-mini"
+      temperature: 0
+      max_output_tokens: 2048
+  ```
+
+### Step 10: Config Loader Utility (`utils/config_loader.py`)
+
+- Built a `load_config()` function that reads `config/config.yaml` and returns a Python dict.
+- How it works (5 steps):
+  1. **Build path** — resolves `config/config.yaml` relative to the project root.
+  2. **Check existence** — raises `FileNotFoundError` if the file is missing.
+  3. **Parse YAML** — uses `yaml.safe_load()` to read the config.
+  4. **Log success** — logs the loaded path and number of top-level keys.
+  5. **Handle errors** — on failure, calls `exception_handler.handle_exception()` (reusable pattern).
+- Run command:
+  ```bash
+  C:/Users/ROHIT/Work/LLMOPS/Document_Portal/.venv/Scripts/python.exe -m utils.config_loader
+  ```
+
 ---
 
 ## Getting Started

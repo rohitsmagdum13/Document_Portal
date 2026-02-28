@@ -49,7 +49,7 @@ def setup_src() -> None:
 
 def setup_utils() -> None:
     create_python_package(BASE_DIR / "utils")
-    ensure_file(BASE_DIR / "utils" / "llm_utils.py")
+    ensure_file(BASE_DIR / "utils" / "llm_utils.py" / "config_loader.py")
 
 
 def setup_notebook() -> None:
