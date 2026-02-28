@@ -1,0 +1,18 @@
+/* style.css — basic styling for Document Portal */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    padding: 2rem;
+    background-color: #f5f5f5;
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 1rem;
+}

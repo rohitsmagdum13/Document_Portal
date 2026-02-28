@@ -1,0 +1,10 @@
+# config.yaml
+# -----------
+# Central configuration for the Document Portal project.
+
+app:
+  name: "Document Portal"
+  version: "0.1.0"
+  debug: true
+
+# Add your LLM, database, and other settings here
