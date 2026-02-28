@@ -13,15 +13,19 @@ class CustomLogger:
         self.level = level
         self.logs_dir = os.path.join(os.getcwd(), log_dir)
         os.makedirs(self.logs_dir, exist_ok=True)
+
+        # JSON log file (structlog) — e.g. logs/2026-02-28.log
         self.log_file_path = os.path.join(
             self.logs_dir, f"{datetime.now(timezone.utc).strftime('%Y-%m-%d')}.log"
         )
+
         self._configure_once()
 
     def _configure_once(self):
         if CustomLogger._configured:
             return
 
+        # ── Structlog (JSON logs with HTTP request context) ───────────────
         app_logger = logging.getLogger("document_portal")
         app_logger.setLevel(self.level)
         app_logger.propagate = False
@@ -39,6 +43,15 @@ class CustomLogger:
         app_logger.handlers.clear()
         app_logger.addHandler(stdout_handler)
         app_logger.addHandler(file_handler)
+
+        # Also capture HTTP logs from urllib3 / httpx into the same file
+        for http_logger_name in ["urllib3", "httpx", "httpcore", "openai"]:
+            http_logger = logging.getLogger(http_logger_name)
+            http_logger.setLevel(self.level)
+            http_logger.propagate = False
+            http_logger.handlers.clear()
+            http_logger.addHandler(stdout_handler)
+            http_logger.addHandler(file_handler)
 
         structlog.configure(
             processors=[
@@ -60,6 +73,9 @@ class CustomLogger:
 
 
 if __name__ == "__main__":
-    app_logger = CustomLogger().get_logger(__file__)
-    app_logger.info("User uploaded a file", user_id=123, filename="report.pdf")
-    app_logger.error("Failed to process PDF", error="File not found", user_id=123)
+    custom = CustomLogger()
+
+    # JSON logger (structlog)
+    json_log = custom.get_logger(__file__)
+    json_log.info("User uploaded a file", user_id=123, filename="report.pdf")
+    json_log.error("Failed to process PDF", error="File not found", user_id=123)

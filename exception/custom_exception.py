@@ -22,7 +22,11 @@ class ExceptionHandler:
             self._configure_logger()
 
     def _configure_logger(self):
-        logger.remove()
+        # Remove only the default stderr handler (id=0), not ALL loguru handlers
+        try:
+            logger.remove(0)
+        except ValueError:
+            pass  # Already removed by another module
         logger.add(
             self.log_file_path,
             level=self.level,
