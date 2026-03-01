@@ -24,4 +24,5 @@ dependencies = [
     "loguru==0.7.3",
     "uvicorn==0.35.0",
     "langchain-openai>=0.3.28",
+    "structlog>=25.5.0",
 ]

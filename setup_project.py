@@ -29,6 +29,13 @@ def setup_logging_and_exception() -> None:
     create_python_package(BASE_DIR / "exception")
     ensure_file(BASE_DIR / "exception" / "custom_exception.py")
 
+def setup_models() -> None:
+    create_python_package(BASE_DIR / "model")
+    ensure_dir(BASE_DIR / "model" / "model.py")
+
+def setup_models() -> None:
+    create_python_package(BASE_DIR / "model")
+    ensure_dir(BASE_DIR / "model" / "model.py")
 
 def setup_src() -> None:
     src_dir = BASE_DIR / "src"
@@ -82,6 +89,7 @@ def setup_template_and_static() -> None:
 
 def main() -> None:
     setup_logging_and_exception()
+    setup_models()
     setup_src()
     setup_utils()
     setup_notebook()
