@@ -1,0 +1,133 @@
+╔══════════════════════════════════════════════════════════════════╗
+║           VENDOR QUERY MANAGEMENT - SYSTEM ARCHITECTURE          ║
+╚══════════════════════════════════════════════════════════════════╝
+
+┌─────────────┐
+│   VENDOR    │
+│  (External) │
+└──────┬──────┘
+       │  Sends Email
+       ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                    EMAIL CHANNEL (Mailbox)                        │
+│         Captures: sender, subject, timestamp,                    │
+│                   thread ID, attachments                         │
+└──────────────────────────┬──────────────────────────────────────┘
+                           │
+                           ▼
+┌─────────────────────────────────────────────────────────────────┐
+│              INTEGRATION / ORCHESTRATION LAYER                   │
+│    (Middleware: Routes, Retries, Logs, Governance Controls)      │
+└───┬─────────────────────┬────────────────────────┬──────────────┘
+    │                     │                        │
+    ▼                     ▼                        ▼
+┌────────────┐   ┌─────────────────┐     ┌─────────────────┐
+│  SALESFORCE│   │   GenAI ENGINE  │     │   ServiceNow    │
+│  (Vendor   │   │                 │     │   (Ticketing)   │
+│   Master)  │   │ Step 2:         │     │                 │
+│            │   │ - Intent Class. │     │ Step 4:         │
+│ - Vendor ID│◄──│ - Entity Extr.  │     │ - Create Ticket │
+│ - Status   │   │ - Urgency Det.  │     │ - Update Ticket │
+│ - Tier     │   │ - Sentiment     │     │ - Populate      │
+│ - Contract │   │ - Confidence    │     │   Fields        │
+│ - SLA Cat. │   │   Score         │     │ - SLA Tracking  │
+│ - Contacts │   └────────┬────────┘     │ - Audit Logs    │
+└─────┬──────┘            │              └────────┬────────┘
+      │                   │                       │
+      │ Step 3:           │                       │
+      │ Vendor Match      │                       │
+      │ - Email Match     │                       │
+      │ - Vendor ID Match │                       │
+      │ - Name Similarity │                       │
+      └───────────────────┘                       │
+                                                  │
+╔═════════════════════════════════════════════════╪══════════════╗
+║              DETAILED STEP-BY-STEP FLOW         │              ║
+╚═════════════════════════════════════════════════╪══════════════╝
+                                                  │
+┌─────────────────────────────────────────────────▼──────────────┐
+│                    STEP-BY-STEP FLOW                            │
+│                                                                  │
+│  STEP 1: Email Intake                                           │
+│  [Mailbox] ──► Capture Metadata ──► Send to GenAI              │
+│                                                                  │
+│  STEP 2: GenAI Understanding                                    │
+│  [GenAI] ──► Intent + Extraction ──► Confidence Score          │
+│                    │                                             │
+│                    ├── HIGH Confidence ──► Auto Process         │
+│                    └── LOW Confidence  ──► Human Triage Queue   │
+│                                                                  │
+│  STEP 3: Vendor Match (Salesforce)                             │
+│  [Email Match] ──► [Vendor ID Match] ──► [Name Similarity]     │
+│                    └──► Fetch Vendor Context                    │
+│                                                                  │
+│  STEP 4: Ticket Create/Update (ServiceNow)                     │
+│  [New Thread?] ──YES──► Create New Ticket                      │
+│       │                                                          │
+│       └──NO──► Append to Existing Ticket                       │
+│                                                                  │
+│  STEP 5: Acknowledgment Email                                   │
+│  [GenAI Draft] ──► Template + Ticket No. + SLA Timeline        │
+│       │                                                          │
+│       ├── High Confidence ──► AUTO SEND                        │
+│       └── Low Confidence  ──► DRAFT for Human Review           │
+│                                                                  │
+│  STEP 6: Intelligent Routing                                    │
+│  [Intent/Category] ──► Finance / Procurement / IT / Legal      │
+│  [Vendor Tier + Urgency] ──► Priority Adjustment               │
+│                                                                  │
+│  STEP 7: Investigation Support (AI Copilot)                    │
+│  [Agent View] ──► Vendor Snapshot + Ticket History             │
+│  [GenAI] ──► Suggest Resolution + Draft Response Options       │
+│                                                                  │
+│  STEP 8: Hold / Resume Logic                                   │
+│  [Docs Needed?] ──► Awaiting Vendor (SLA Paused)              │
+│  [Internal Dep?] ──► Awaiting Internal Info (SLA Paused)       │
+│                                                                  │
+│  STEP 9: Escalation Logic                                       │
+│  [SLA Timer] ──► 70% ──► 85% ──► 95% ──► ALERT               │
+│  [High Tier Vendor / Negative Sentiment] ──► Auto Escalate     │
+│  [Escalation Email] ──► Manager Review                         │
+│                                                                  │
+│  STEP 10: Resolution + Closure                                  │
+│  [Resolved] ──► GenAI Draft Resolution Email                   │
+│       │                                                          │
+│       ├── Vendor Confirms ──► CLOSE Ticket                     │
+│       └── No Response ──► Auto-Close (Policy Window)           │
+│                                                                  │
+│  [Vendor Replies After Close?]                                  │
+│       ├── YES ──► Detect + Reopen / Link to Prior Ticket       │
+│       └── NO  ──► Generate Final Audit Summary                 │
+│                                                                  │
+└─────────────────────────────────────────────────────────────────┘
+
+╔═════════════════════════════════════════════════════════════════╗
+║                     ROLES SUMMARY                               ║
+╠═════════════════════════════════════════════════════════════════╣
+║  VENDOR          ──► Raises Query / Provides Docs              ║
+║  SUPPORT/TRIAGE  ──► Monitors Exceptions / Low Confidence      ║
+║  RESOLVER GROUPS ──► Finance / Procurement / IT                ║
+║  MANAGER         ──► Escalations / Approvals                   ║
+║  GenAI SYSTEM    ──► Parse / Draft / Route (No Authority)      ║
+║  ADMIN           ──► Templates / Thresholds / Audit Logs       ║
+╚═════════════════════════════════════════════════════════════════╝
+
+╔═════════════════════════════════════════════════════════════════╗
+║                  GOVERNANCE CONTROLS                            ║
+╠═════════════════════════════════════════════════════════════════╣
+║  Confidence Score ──► Auto-Send vs Draft vs Human Triage       ║
+║  Audit Logs       ──► All AI Actions Logged                    ║
+║  RBAC             ──► Role Based Access Control                 ║
+║  Attachment Scan  ──► Security Check Before Processing         ║
+║  Prompt Control   ──► Version Controlled + Traceable           ║
+╚═════════════════════════════════════════════════════════════════╝
+
+╔═════════════════════════════════════════════════════════════════╗
+║                    OUT OF SCOPE (Phase 1)                       ║
+╠═════════════════════════════════════════════════════════════════╣
+║  ✗ Payment Authorization                                        ║
+║  ✗ Contract Modification                                        ║
+║  ✗ Legal Decision Making                                        ║
+║  ✗ Salesforce Master Data Edit (without approval)              ║
+║  ✗ Fully Autonomous Resolution                                  ║
+╚═════════════════════════════════════════════════════════════════╝
