@@ -1,133 +1,617 @@
-╔══════════════════════════════════════════════════════════════════╗
-║           VENDOR QUERY MANAGEMENT - SYSTEM ARCHITECTURE          ║
-╚══════════════════════════════════════════════════════════════════╝
+╔══════════════════════════════════════════════════════════════════════════════════════╗
+║          VENDOR QUERY MANAGEMENT - COMPLETE DETAILED STEP-BY-STEP FLOW              ║
+║                    (Salesforce + ServiceNow + GenAI + Email)                         ║
+╚══════════════════════════════════════════════════════════════════════════════════════╝
 
-┌─────────────┐
-│   VENDOR    │
-│  (External) │
-└──────┬──────┘
-       │  Sends Email
-       ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                    EMAIL CHANNEL (Mailbox)                        │
-│         Captures: sender, subject, timestamp,                    │
-│                   thread ID, attachments                         │
-└──────────────────────────┬──────────────────────────────────────┘
-                           │
-                           ▼
-┌─────────────────────────────────────────────────────────────────┐
-│              INTEGRATION / ORCHESTRATION LAYER                   │
-│    (Middleware: Routes, Retries, Logs, Governance Controls)      │
-└───┬─────────────────────┬────────────────────────┬──────────────┘
-    │                     │                        │
-    ▼                     ▼                        ▼
-┌────────────┐   ┌─────────────────┐     ┌─────────────────┐
-│  SALESFORCE│   │   GenAI ENGINE  │     │   ServiceNow    │
-│  (Vendor   │   │                 │     │   (Ticketing)   │
-│   Master)  │   │ Step 2:         │     │                 │
-│            │   │ - Intent Class. │     │ Step 4:         │
-│ - Vendor ID│◄──│ - Entity Extr.  │     │ - Create Ticket │
-│ - Status   │   │ - Urgency Det.  │     │ - Update Ticket │
-│ - Tier     │   │ - Sentiment     │     │ - Populate      │
-│ - Contract │   │ - Confidence    │     │   Fields        │
-│ - SLA Cat. │   │   Score         │     │ - SLA Tracking  │
-│ - Contacts │   └────────┬────────┘     │ - Audit Logs    │
-└─────┬──────┘            │              └────────┬────────┘
-      │                   │                       │
-      │ Step 3:           │                       │
-      │ Vendor Match      │                       │
-      │ - Email Match     │                       │
-      │ - Vendor ID Match │                       │
-      │ - Name Similarity │                       │
-      └───────────────────┘                       │
-                                                  │
-╔═════════════════════════════════════════════════╪══════════════╗
-║              DETAILED STEP-BY-STEP FLOW         │              ║
-╚═════════════════════════════════════════════════╪══════════════╝
-                                                  │
-┌─────────────────────────────────────────────────▼──────────────┐
-│                    STEP-BY-STEP FLOW                            │
-│                                                                  │
-│  STEP 1: Email Intake                                           │
-│  [Mailbox] ──► Capture Metadata ──► Send to GenAI              │
-│                                                                  │
-│  STEP 2: GenAI Understanding                                    │
-│  [GenAI] ──► Intent + Extraction ──► Confidence Score          │
-│                    │                                             │
-│                    ├── HIGH Confidence ──► Auto Process         │
-│                    └── LOW Confidence  ──► Human Triage Queue   │
-│                                                                  │
-│  STEP 3: Vendor Match (Salesforce)                             │
-│  [Email Match] ──► [Vendor ID Match] ──► [Name Similarity]     │
-│                    └──► Fetch Vendor Context                    │
-│                                                                  │
-│  STEP 4: Ticket Create/Update (ServiceNow)                     │
-│  [New Thread?] ──YES──► Create New Ticket                      │
-│       │                                                          │
-│       └──NO──► Append to Existing Ticket                       │
-│                                                                  │
-│  STEP 5: Acknowledgment Email                                   │
-│  [GenAI Draft] ──► Template + Ticket No. + SLA Timeline        │
-│       │                                                          │
-│       ├── High Confidence ──► AUTO SEND                        │
-│       └── Low Confidence  ──► DRAFT for Human Review           │
-│                                                                  │
-│  STEP 6: Intelligent Routing                                    │
-│  [Intent/Category] ──► Finance / Procurement / IT / Legal      │
-│  [Vendor Tier + Urgency] ──► Priority Adjustment               │
-│                                                                  │
-│  STEP 7: Investigation Support (AI Copilot)                    │
-│  [Agent View] ──► Vendor Snapshot + Ticket History             │
-│  [GenAI] ──► Suggest Resolution + Draft Response Options       │
-│                                                                  │
-│  STEP 8: Hold / Resume Logic                                   │
-│  [Docs Needed?] ──► Awaiting Vendor (SLA Paused)              │
-│  [Internal Dep?] ──► Awaiting Internal Info (SLA Paused)       │
-│                                                                  │
-│  STEP 9: Escalation Logic                                       │
-│  [SLA Timer] ──► 70% ──► 85% ──► 95% ──► ALERT               │
-│  [High Tier Vendor / Negative Sentiment] ──► Auto Escalate     │
-│  [Escalation Email] ──► Manager Review                         │
-│                                                                  │
-│  STEP 10: Resolution + Closure                                  │
-│  [Resolved] ──► GenAI Draft Resolution Email                   │
-│       │                                                          │
-│       ├── Vendor Confirms ──► CLOSE Ticket                     │
-│       └── No Response ──► Auto-Close (Policy Window)           │
-│                                                                  │
-│  [Vendor Replies After Close?]                                  │
-│       ├── YES ──► Detect + Reopen / Link to Prior Ticket       │
-│       └── NO  ──► Generate Final Audit Summary                 │
-│                                                                  │
-└─────────────────────────────────────────────────────────────────┘
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+                           SYSTEMS INVOLVED
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-╔═════════════════════════════════════════════════════════════════╗
-║                     ROLES SUMMARY                               ║
-╠═════════════════════════════════════════════════════════════════╣
-║  VENDOR          ──► Raises Query / Provides Docs              ║
-║  SUPPORT/TRIAGE  ──► Monitors Exceptions / Low Confidence      ║
-║  RESOLVER GROUPS ──► Finance / Procurement / IT                ║
-║  MANAGER         ──► Escalations / Approvals                   ║
-║  GenAI SYSTEM    ──► Parse / Draft / Route (No Authority)      ║
-║  ADMIN           ──► Templates / Thresholds / Audit Logs       ║
-╚═════════════════════════════════════════════════════════════════╝
+┌─────────────────────┐  ┌─────────────────────┐  ┌─────────────────────┐  ┌─────────────────────┐
+│    SALESFORCE       │  │    ServiceNow        │  │    GenAI ENGINE     │  │   EMAIL CHANNEL     │
+│  (Vendor Master /   │  │  (Ticket Workflow /  │  │  (Understanding +   │  │  (Primary Inbound + │
+│   Source of Truth)  │  │   System of Record)  │  │   Drafting +        │  │   Outbound Comm.)   │
+│                     │  │                      │  │   Orchestration)    │  │                     │
+│ - Vendor ID         │  │ - Ticket Creation    │  │ - Intent Class.     │  │ - Read Inbound      │
+│ - Vendor Name       │  │ - Unique Ticket No.  │  │ - Entity Extraction │  │ - Send Outbound     │
+│ - Entity Details    │  │ - Categorization     │  │ - Urgency Detection │  │ - Thread Continuity │
+│ - Active/Inactive/  │  │ - Priority+Impact    │  │ - Sentiment Detect. │  │ - Attachments       │
+│   Blocked Status    │  │ - State Transitions  │  │ - Confidence Score  │  │                     │
+│ - Vendor Tier       │  │   New→Assigned→      │  │ - Draft Emails      │  │                     │
+│ - Contract Refs     │  │   In Progress→       │  │ - Summarization     │  │                     │
+│ - Validity Dates    │  │   Resolved→Closed    │  │ - Routing Support   │  │                     │
+│ - SLA Category      │  │ - Hold/Reopen States │  │                     │  │                     │
+│ - Payment Terms     │  │ - SLA Tracking       │  │ NOTE: GenAI has     │  │                     │
+│ - Vendor Contacts   │  │ - Audit Logs         │  │ NO final authority. │  │                     │
+│ - Email IDs         │  │ - Reporting          │  │ Supports humans     │  │                     │
+│ - Escalation Cont.  │  │                      │  │ only.               │  │                     │
+└─────────────────────┘  └─────────────────────┘  └─────────────────────┘  └─────────────────────┘
 
-╔═════════════════════════════════════════════════════════════════╗
-║                  GOVERNANCE CONTROLS                            ║
-╠═════════════════════════════════════════════════════════════════╣
-║  Confidence Score ──► Auto-Send vs Draft vs Human Triage       ║
-║  Audit Logs       ──► All AI Actions Logged                    ║
-║  RBAC             ──► Role Based Access Control                 ║
-║  Attachment Scan  ──► Security Check Before Processing         ║
-║  Prompt Control   ──► Version Controlled + Traceable           ║
-╚═════════════════════════════════════════════════════════════════╝
+         ▲                        ▲                        ▲                        ▲
+         └────────────────────────┴────────────────────────┴────────────────────────┘
+                                           │
+                         ┌─────────────────▼──────────────────┐
+                         │   INTEGRATION / ORCHESTRATION LAYER  │
+                         │                                       │
+                         │ - Connects Email↔GenAI↔SF↔ServiceNow │
+                         │ - Applies Business Rules              │
+                         │ - Retries on Failures                 │
+                         │ - Logs All Actions                    │
+                         │ - Enforces Governance Controls        │
+                         │   (Confidence Thresholds,             │
+                         │    Approvals, Audit Logs)             │
+                         └───────────────────────────────────────┘
 
-╔═════════════════════════════════════════════════════════════════╗
-║                    OUT OF SCOPE (Phase 1)                       ║
-╠═════════════════════════════════════════════════════════════════╣
-║  ✗ Payment Authorization                                        ║
-║  ✗ Contract Modification                                        ║
-║  ✗ Legal Decision Making                                        ║
-║  ✗ Salesforce Master Data Edit (without approval)              ║
-║  ✗ Fully Autonomous Resolution                                  ║
-╚═════════════════════════════════════════════════════════════════╝
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+                        AS-IS FLOW (CURRENT MANUAL PROCESS)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+┌──────────────────────────────────────────────────────────────────────────────────────┐
+│ AS-IS STEP 1: INBOUND QUERY                                                          │
+│                                                                                      │
+│  [VENDOR]                                                                            │
+│     │                                                                                │
+│     │──► Sends email to support mailbox / shared ID                                 │
+│     │                                                                                │
+│  [SUPPORT EXECUTIVE]                                                                 │
+│     │──► Manually monitors the mailbox                                              │
+│     │──► Opens the email                                                             │
+│     │──► Reads and interprets the request manually                                  │
+│         (payment delay / contract clarification / access issue etc.)                │
+│                                                                                      │
+│  ⚠ PAIN POINT: Email is unstructured. Two people may interpret the same             │
+│    email differently → inconsistent categorization and routing.                      │
+└──────────────────────────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌──────────────────────────────────────────────────────────────────────────────────────┐
+│ AS-IS STEP 2: VENDOR IDENTIFICATION (MANUAL)                                         │
+│                                                                                      │
+│  [SUPPORT EXECUTIVE]                                                                 │
+│     │──► Manually searches Salesforce                                               │
+│     │    using: vendor name / email / signature details                             │
+│     │──► Confirms Vendor ID                                                         │
+│     │──► Checks basic status: Active / Blocked                                      │
+│                                                                                      │
+│  ⚠ PAIN POINT: Manual matching is slow and error-prone,                             │
+│    especially when vendor names are similar or email uses                            │
+│    a different sender address.                                                       │
+└──────────────────────────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌──────────────────────────────────────────────────────────────────────────────────────┐
+│ AS-IS STEP 3: TICKET CREATION IN SERVICENOW (MANUAL)                                 │
+│                                                                                      │
+│  [SUPPORT EXECUTIVE]                                                                 │
+│     │──► Creates new ticket in ServiceNow manually                                  │
+│     │──► Copies/pastes email content into ticket description                        │
+│     │──► Manually selects category / sub-category                                   │
+│     │──► Assigns priority and impact manually                                       │
+│     │──► Manually assigns ticket to internal group                                  │
+│     │    (Finance / Procurement / IT / etc.)                                        │
+│     │──► Sends acknowledgment email manually to vendor                              │
+│                                                                                      │
+│  ⚠ PAIN POINTS:                                                                     │
+│    - Manual ticket entry causes delays                                               │
+│    - Inconsistent categories make reporting weak                                     │
+│    - Priority may be wrong                                                           │
+│    - Acknowledgments may be inconsistent in tone and format                         │
+└──────────────────────────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌──────────────────────────────────────────────────────────────────────────────────────┐
+│ AS-IS STEP 4: INVESTIGATION AND COMMUNICATION (MANUAL)                               │
+│                                                                                      │
+│  [ASSIGNED TEAM]                                                                     │
+│     │──► Investigates by checking internal systems and documents                    │
+│     │    (payments / contracts / access logs)                                       │
+│     │──► Support executive or team drafts responses manually                        │
+│     │──► Sends updates to vendor via email                                          │
+│     │──► If additional info required:                                               │
+│              └──► Requests documents from vendor                                    │
+│              └──► Puts ticket on HOLD                                               │
+│                                                                                      │
+│  ⚠ PAIN POINTS:                                                                     │
+│    - Communication quality varies                                                    │
+│    - Follow-ups are easy to miss                                                     │
+│    - SLA breaches happen due to manual tracking                                     │
+└──────────────────────────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌──────────────────────────────────────────────────────────────────────────────────────┐
+│ AS-IS STEP 5: RESOLUTION AND CLOSURE (MANUAL)                                        │
+│                                                                                      │
+│  [SUPPORT EXECUTIVE / TEAM]                                                          │
+│     │──► Drafts and sends closure email manually                                    │
+│     │──► Updates ticket status to Resolved / Closed manually                       │
+│     │──► If vendor replies after closure:                                           │
+│              └──► Handling depends on human attention                               │
+│              └──► May reopen ticket OR may create duplicate                         │
+│                                                                                      │
+│  ⚠ PAIN POINTS:                                                                     │
+│    - Weak reopen detection and duplicate tickets                                     │
+│    - Incomplete closure summaries                                                    │
+│    - Limited audit quality                                                           │
+└──────────────────────────────────────────────────────────────────────────────────────┘
+
+┌──────────────────────────────────────────────────────────────────────────────────────┐
+│ AS-IS CHALLENGES SUMMARY                                                             │
+│                                                                                      │
+│  ✗ High manual effort and slower first response time                                │
+│  ✗ Inconsistent categorization and routing; rework required                         │
+│  ✗ SLA breach risk due to manual monitoring                                         │
+│  ✗ Email tone/format inconsistency; higher escalation risk                          │
+│  ✗ Limited analytics and repeat-issue pattern detection                             │
+│  ✗ Higher dependency on individuals (knowledge not standardized)                    │
+└──────────────────────────────────────────────────────────────────────────────────────┘
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+               TO-BE FLOW (GenAI ASSISTED AUTOMATED PROCESS)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+┌──────────────────────────────────────────────────────────────────────────────────────┐
+│ TO-BE PRINCIPLES                                                                     │
+│                                                                                      │
+│  ✔ Salesforce remains source of truth for vendor master context                     │
+│  ✔ ServiceNow remains system of record for ticket lifecycle and SLA                 │
+│  ✔ GenAI assists by converting unstructured emails into structured actions/drafts   │
+│  ✔ Automation controlled using confidence thresholds and approval gates             │
+│  ✔ Every inbound vendor communication must be traceable to a ServiceNow ticket      │
+└──────────────────────────────────────────────────────────────────────────────────────┘
+
+
+╔══════════════════════════════════════════════════════════════════════════════════════╗
+║  STEP 1 — EMAIL INTAKE AND PRE-PROCESSING                                            ║
+╚══════════════════════════════════════════════════════════════════════════════════════╝
+
+  [VENDOR]
+     │
+     │──► Sends email to vendor support mailbox
+     │
+  [MAILBOX / EMAIL SYSTEM]
+     │
+     │──► DETECT new inbound email in vendor support mailbox
+     │
+     │──► CAPTURE metadata:
+     │         ├── Sender Email Address
+     │         ├── Subject Line
+     │         ├── Timestamp
+     │         ├── Thread Identifiers  ◄── CRITICAL for linking replies
+     │         └── Attachments
+     │
+     │──► SEND email body + all metadata ──► to GenAI Engine
+     │
+     │
+  📌 WHY THIS MATTERS:
+     Thread identifiers are crucial so replies can be
+     linked to the right existing ticket automatically.
+     This step converts raw email into a structured request.
+
+
+╔══════════════════════════════════════════════════════════════════════════════════════╗
+║  STEP 2 — GenAI UNDERSTANDING (INTENT + EXTRACTION)                                  ║
+╚══════════════════════════════════════════════════════════════════════════════════════╝
+
+  [GenAI ENGINE]
+     │
+     │──► INTENT CLASSIFICATION
+     │         ├── Payment Delay
+     │         ├── Invoice Clarification
+     │         ├── Contract Query
+     │         ├── Technical Issue
+     │         ├── Access Issue
+     │         └── Compliance Docs
+     │
+     │──► ENTITY EXTRACTION
+     │         ├── Vendor Name
+     │         ├── Vendor ID (if present in email)
+     │         ├── Invoice / Reference Numbers
+     │         ├── Dates
+     │         └── Requested Action
+     │
+     │──► URGENCY DETECTION
+     │         ├── Keywords: 'urgent', 'escalation', 'immediately'
+     │         └── Plus Business Rules applied
+     │
+     │──► SENTIMENT ASSESSMENT
+     │         ├── Angry / Frustrated  ──► Flag for escalation
+     │         └── Neutral             ──► Normal flow
+     │
+     │──► CONFIDENCE SCORE GENERATED
+     │         │
+     │         ├── HIGH CONFIDENCE ──────────────────────► AUTO PROCESS
+     │         │                                            Continue to Step 3
+     │         │
+     │         └── LOW CONFIDENCE ──────────────────────► HUMAN TRIAGE QUEUE
+     │                                                     Stop auto processing
+     │                                                     Route to Support/Triage
+     │                                                     agent for manual review
+     │
+  📌 CONTROL RULE:
+     If confidence score is below threshold →
+     Route email to human triage queue BEFORE
+     creating or sending anything automatically.
+
+
+╔══════════════════════════════════════════════════════════════════════════════════════╗
+║  STEP 3 — VENDOR MATCH AND CONTEXT FETCH (SALESFORCE)                                ║
+╚══════════════════════════════════════════════════════════════════════════════════════╝
+
+  [ORCHESTRATION LAYER + SALESFORCE]
+     │
+     │──► MATCH ATTEMPT 1: Email Match
+     │         └── Match sender email ──► Vendor Contacts in Salesforce
+     │                   │
+     │                   ├── MATCH FOUND ──────────────────► Proceed to Context Fetch
+     │                   │
+     │                   └── NO MATCH ──────────────────────► Try Match Attempt 2
+     │
+     │──► MATCH ATTEMPT 2: Vendor ID Match
+     │         └── Use Vendor ID extracted by GenAI (if available)
+     │                   │
+     │                   ├── MATCH FOUND ──────────────────► Proceed to Context Fetch
+     │                   │
+     │                   └── NO MATCH ──────────────────────► Try Match Attempt 3
+     │
+     │──► MATCH ATTEMPT 3: Name Similarity Match
+     │         └── Use name similarity algorithm WITH safeguards
+     │                   │
+     │                   ├── MATCH FOUND ──────────────────► Proceed to Context Fetch
+     │                   │
+     │                   └── STILL NOT FOUND ───────────────► Route to Human Triage
+     │
+     │──► CONTEXT FETCH from Salesforce (once matched):
+     │         ├── Vendor Status     (Active / Inactive / Blocked)
+     │         ├── Vendor Tier / Criticality
+     │         ├── Contract References
+     │         ├── SLA Category
+     │         └── Escalation Contacts
+     │
+  📌 WHY CRITICAL:
+     Wrong vendor match can cause DATA LEAKAGE and
+     INCORRECT COMMUNICATION. Matching must be
+     multi-step and conservative.
+
+
+╔══════════════════════════════════════════════════════════════════════════════════════╗
+║  STEP 4 — TICKET CREATE OR UPDATE (SERVICENOW)                                       ║
+╚══════════════════════════════════════════════════════════════════════════════════════╝
+
+  [ORCHESTRATION LAYER + ServiceNow]
+     │
+     │──► CHECK: Does existing ticket exist for this thread/reference?
+     │         │
+     │         ├── NO EXISTING TICKET FOUND
+     │         │       └──► CREATE NEW TICKET
+     │         │                 ├── Generate unique ticket number
+     │         │                 ├── Populate: Category / Sub-Category
+     │         │                 ├── Populate: Priority / Impact
+     │         │                 ├── Populate: Assignment Group
+     │         │                 ├── Populate: Vendor Reference
+     │         │                 ├── Populate: Short Description
+     │         │                 ├── Generate AI Summary for ticket description
+     │         │                 │   (clean, professional, non-verbose)
+     │         │                 └── Attach original email + attachments
+     │         │
+     │         └── EXISTING TICKET FOUND (same thread/ticket reference)
+     │                 └──► UPDATE EXISTING TICKET
+     │                           ├── Append new communication
+     │                           ├── Update status if needed
+     │                           └── Avoid duplicate ticket creation
+     │
+  📌 DUPLICATE PREVENTION:
+     System checks existing ticket references in:
+     - Email Subject
+     - Email Body
+     - Message Thread ID
+
+
+╔══════════════════════════════════════════════════════════════════════════════════════╗
+║  STEP 5 — AUTOMATED ACKNOWLEDGMENT EMAIL (GenAI DRAFT + SEND RULES)                  ║
+╚══════════════════════════════════════════════════════════════════════════════════════╝
+
+  [GenAI ENGINE + EMAIL SYSTEM]
+     │
+     │──► GENERATE Acknowledgment Email containing:
+     │         ├── Ticket Number
+     │         ├── Expected SLA Timeline
+     │         └── Next Steps
+     │
+     │──► USE approved templates + controlled tone
+     │         ├── Professional tone
+     │         └── Neutral tone
+     │
+     │──► SEND MODE DECISION:
+     │         │
+     │         ├── HIGH CONFIDENCE + LOW RISK ──────────► AUTO SEND to Vendor
+     │         │
+     │         └── LOW CONFIDENCE + HIGH RISK ──────────► SAVE AS DRAFT
+     │                                                     Route to Human for Review
+     │                                                     Human Approves → Then Send
+     │
+  📌 WHY IMPORTANT:
+     Immediate acknowledgment improves vendor experience
+     and prevents repeated follow-ups.
+     Templates prevent hallucinations and policy violations.
+
+
+╔══════════════════════════════════════════════════════════════════════════════════════╗
+║  STEP 6 — INTELLIGENT ROUTING AND ASSIGNMENT                                         ║
+╚══════════════════════════════════════════════════════════════════════════════════════╝
+
+  [ORCHESTRATION LAYER + ServiceNow]
+     │
+     │──► ROUTE ticket to internal group based on Intent/Category:
+     │         ├── Payment Delay      ──► Finance Team
+     │         ├── Contract Query     ──► Procurement Team
+     │         ├── Access Issue       ──► IT Team
+     │         └── Compliance Docs    ──► Legal/Compliance Team
+     │
+     │──► ADJUST PRIORITY using:
+     │         ├── Vendor Tier
+     │         ├── Urgency Signals from GenAI
+     │         └── SLA Rules
+     │
+     │──► SPECIAL ROUTING RULES:
+     │         ├── Vendor is Blocked / Inactive ──────► Escalation / Management Queue
+     │         └── Query indicates Legal Risk   ──────► Legal Queue
+     │
+  📌 WHY IMPORTANT:
+     Correct routing reduces cycle time.
+     Priority must be explainable and consistent
+     to avoid stakeholder disputes.
+
+
+╔══════════════════════════════════════════════════════════════════════════════════════╗
+║  STEP 7 — INVESTIGATION SUPPORT (AI COPILOT FOR AGENTS)                              ║
+╚══════════════════════════════════════════════════════════════════════════════════════╝
+
+  [GenAI ENGINE → AGENT / RESOLVER GROUP]
+     │
+     │──► PROVIDE Agent View Summary:
+     │         ├── Vendor Snapshot (from Salesforce)
+     │         ├── Ticket History (from ServiceNow)
+     │         └── Extracted Entities (from GenAI Step 2)
+     │
+     │──► SUGGEST possible resolution steps (NON-BINDING):
+     │         ├── Based on past similar tickets
+     │         └── Based on known SOPs
+     │
+     │──► DRAFT response options for agent to choose from:
+     │         ├── Clarification Request Email
+     │         ├── Document Request Email
+     │         ├── Status Update Email
+     │         └── Resolution Email
+     │
+     │──► AGENT (Human) makes final decision
+     │         └── Approves / Edits / Rejects GenAI draft
+     │
+  📌 WHY IMPORTANT:
+     AI reduces time spent reading long threads and
+     searching across systems.
+     AGENTS REMAIN FINAL DECISION-MAKERS.
+
+
+╔══════════════════════════════════════════════════════════════════════════════════════╗
+║  STEP 8 — HOLD / RESUME LOGIC                                                        ║
+╚══════════════════════════════════════════════════════════════════════════════════════╝
+
+  [ServiceNow + Orchestration Layer]
+     │
+     │──► SCENARIO A: Documents needed from Vendor
+     │         │
+     │         └──► SET ticket status: "Awaiting Vendor"
+     │               └──► SEND Document Request Email to Vendor (GenAI Draft)
+     │               └──► SLA PAUSED ◄── Vendor's turn now
+     │
+     │──► SCENARIO B: Internal dependency exists
+     │         │       (e.g., finance team confirmation needed)
+     │         └──► SET ticket status: "Awaiting Internal Info"
+     │               └──► SLA PAUSED ◄── Internal team's turn
+     │
+     │──► SLA PAUSE/RESUME rules:
+     │         ├── Applied as per policy
+     │         └── Documented in ServiceNow
+     │
+     │──► RESUME trigger:
+     │         ├── Vendor sends required documents ──► Resume SLA, update ticket
+     │         └── Internal team confirms ───────────► Resume SLA, update ticket
+     │
+  📌 WHY IMPORTANT:
+     Hold states prevent SLA from unfairly breaching
+     when the ball is in the vendor's court.
+     Must be governed consistently.
+
+
+╔══════════════════════════════════════════════════════════════════════════════════════╗
+║  STEP 9 — ESCALATION LOGIC                                                           ║
+╚══════════════════════════════════════════════════════════════════════════════════════╝
+
+  [Orchestration Layer + ServiceNow + GenAI]
+     │
+     │──► MONITOR SLA Timers continuously
+     │         │
+     │         ├── 70% SLA consumed  ──────────────────► ALERT triggered (Internal)
+     │         ├── 85% SLA consumed  ──────────────────► ESCALATION WARNING
+     │         └── 95% SLA consumed  ──────────────────► CRITICAL ESCALATION
+     │
+     │──► AUTO ESCALATION triggers:
+     │         ├── High-tier vendor detected ──────────► Auto Escalate
+     │         └── Highly negative sentiment detected ► Auto Escalate
+     │
+     │──► DRAFT Escalation Emails:
+     │         ├── For Manager Review (human approves before sending to vendor)
+     │         └── Auto-notify internally (no vendor-facing auto-send without approval)
+     │
+  📌 WHY IMPORTANT:
+     Proactive escalation prevents breach and improves visibility.
+     Vendor-facing escalations MUST require human approval.
+
+
+╔══════════════════════════════════════════════════════════════════════════════════════╗
+║  STEP 10 — RESOLUTION, CLOSURE, AND REOPEN                                           ║
+╚══════════════════════════════════════════════════════════════════════════════════════╝
+
+  [GenAI + ServiceNow + Email System]
+     │
+     │──► WHEN RESOLVED:
+     │         └──► GenAI GENERATES Resolution Email Draft containing:
+     │                   ├── What was done
+     │                   ├── Outcome
+     │                   ├── Next Steps
+     │                   └── Contact Path
+     │
+     │──► MOVE ticket to: RESOLVED
+     │
+     │──► CLOSURE DECISION:
+     │         │
+     │         ├── Vendor confirms resolution ────────► CLOSE Ticket immediately
+     │         │
+     │         └── No response from vendor
+     │                 └──► AUTO-CLOSE after policy-defined window
+     │
+     │──► AFTER CLOSURE - REOPEN DETECTION:
+     │         │
+     │         ├── Vendor replies after closure?
+     │         │       │
+     │         │       ├── YES ──► DETECT reply automatically
+     │         │       │           ├── REOPEN existing ticket  OR
+     │         │       │           └── LINK to prior ticket
+     │         │       │               (avoid duplicate ticket creation)
+     │         │       │
+     │         │       └── NO  ──► Proceed to final audit step
+     │         │
+     │──► GENERATE Final Ticket Summary for:
+     │         ├── Audit
+     │         └── Reporting
+     │
+  📌 WHY IMPORTANT:
+     Closure must be auditable and understandable for future reference.
+     Reopen logic protects continuity and prevents fragmented conversations.
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+                         GOVERNANCE, CONTROLS AND SAFETY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+┌──────────────────────────────────────────────────────────────────────────────────────┐
+│                                                                                      │
+│  CONFIDENCE THRESHOLDS                                                               │
+│       ├── HIGH: Auto-send email / Auto-create ticket                                │
+│       ├── MID:  Draft for human review                                              │
+│       └── LOW:  Full human triage (no auto actions)                                 │
+│                                                                                      │
+│  APPROVED TEMPLATES                                                                  │
+│       ├── Acknowledgment Email Template                                             │
+│       ├── Clarification Request Template                                            │
+│       ├── Document Request Template                                                 │
+│       ├── Status Update Template                                                    │
+│       └── Resolution / Closure Template                                             │
+│                                                                                      │
+│  AUDIT LOGS (for every action)                                                       │
+│       ├── What AI extracted                                                         │
+│       ├── What actions were taken                                                   │
+│       └── Who approved outbound messages                                            │
+│                                                                                      │
+│  ACCESS CONTROL                                                                      │
+│       ├── Role-Based Access Control (RBAC)                                         │
+│       └── Data masking where necessary                                              │
+│                                                                                      │
+│  SECURITY                                                                            │
+│       └── Attachment security scanning BEFORE storing/processing                   │
+│                                                                                      │
+│  PROMPT CONTROL                                                                      │
+│       └── Version controlled so changes are traceable and reversible               │
+│                                                                                      │
+└──────────────────────────────────────────────────────────────────────────────────────┘
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+                              ROLES AND RESPONSIBILITIES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+┌──────────────────────┬───────────────────────────────────────────────────────────────┐
+│  ROLE                │  RESPONSIBILITY                                               │
+├──────────────────────┼───────────────────────────────────────────────────────────────┤
+│  Vendor              │  Raises query, provides supporting documents,                │
+│                      │  confirms resolution when applicable                         │
+├──────────────────────┼───────────────────────────────────────────────────────────────┤
+│  Support / Triage    │  Oversees mailbox exceptions, reviews low-confidence         │
+│                      │  cases, ensures correct ticket linkage                       │
+├──────────────────────┼───────────────────────────────────────────────────────────────┤
+│  Resolver Groups     │  Investigate and resolve queries,                            │
+│  (Finance /          │  update ticket with actions and evidence                     │
+│  Procurement / IT)   │                                                               │
+├──────────────────────┼───────────────────────────────────────────────────────────────┤
+│  Manager /           │  Handles escalations, approvals, and exceptions              │
+│  Escalation Owner    │                                                               │
+├──────────────────────┼───────────────────────────────────────────────────────────────┤
+│  GenAI System        │  Parses emails, drafts communications, supports              │
+│                      │  routing and summarization (NO FINAL AUTHORITY)              │
+├──────────────────────┼───────────────────────────────────────────────────────────────┤
+│  Admin / Governance  │  Manages templates, thresholds, audit logging,               │
+│                      │  and access control                                          │
+└──────────────────────┴───────────────────────────────────────────────────────────────┘
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+                          AUTOMATION SCOPE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+┌──────────────────────────────────────┬───────────────────────────────────────────────┐
+│  ✔ IN SCOPE (AUTOMATE)               │  ✗ OUT OF SCOPE (PHASE 1)                    │
+├──────────────────────────────────────┼───────────────────────────────────────────────┤
+│  Inbound email understanding and     │  Approving or releasing payments              │
+│  structured extraction using GenAI   │  (finance authorization stays manual)        │
+├──────────────────────────────────────┼───────────────────────────────────────────────┤
+│  Vendor identification and context   │  Modifying contracts or                      │
+│  retrieval from Salesforce           │  renegotiating terms                         │
+├──────────────────────────────────────┼───────────────────────────────────────────────┤
+│  ServiceNow ticket creation/update   │  Legal decision-making or                    │
+│  and field population                │  dispute adjudication                        │
+├──────────────────────────────────────┼───────────────────────────────────────────────┤
+│  Automated acknowledgments and       │  Editing Salesforce vendor master data       │
+│  standardized email drafting         │  without human approval                      │
+├──────────────────────────────────────┼───────────────────────────────────────────────┤
+│  Routing, prioritization support,    │  Fully autonomous resolution                 │
+│  SLA risk alerts, and summaries      │  without human oversight                     │
+├──────────────────────────────────────┼───────────────────────────────────────────────┤
+│  Reopen detection and                │                                               │
+│  conversation-to-ticket linking      │                                               │
+└──────────────────────────────────────┴───────────────────────────────────────────────┘
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+                              KPIs AND SUCCESS METRICS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ├── First Response Time       (email received → acknowledgment sent)
+  ├── Resolution Time           (ticket created → resolved/closed)
+  ├── SLA Adherence Rate        (% of tickets meeting SLA)
+  ├── Reopen Rate               (% of tickets reopened after closure)
+  ├── Automation Rate           (% of tickets created/routed without human triage)
+  └── Email Quality Consistency (stakeholder feedback / reduction in escalations
+                                  due to tone)
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+                         ASSUMPTIONS AND DEPENDENCIES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ├── Vendor contacts maintained accurately in Salesforce (email IDs up to date)
+  ├── ServiceNow categories/queues and SLAs defined and agreed by stakeholders
+  ├── Email templates reviewed and approved (legal/compliance if required)
+  ├── Required API access and security approvals available for Salesforce+ServiceNow
+  └── Logging/monitoring in place for integration failures and retries
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+                        IMPLEMENTATION NOTES (FOR YOUR TEAM)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  ├── BAs         ──► Derive functional requirements and user stories from Sections 4–7
+  ├── Developers  ──► Map integrations and workflows from Sections 2 and 6
+  ├── QA          ──► Create test scenarios from hold/resume rules and reopen logic
+  └── Stakeholders──► Validate scope and governance from Sections 7–9
