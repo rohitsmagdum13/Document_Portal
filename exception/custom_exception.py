@@ -83,12 +83,12 @@ class DocumentPortalException(Exception):
         return self.message
 
 
-if __name__ == "__main__":
-    handler = ExceptionHandler()
+# if __name__ == "__main__":
+#     handler = ExceptionHandler()
 
-    try:
-        value = int("abc")
-        print(value)
-    except Exception as error:
-        app_exception = handler.create_exception("Failed to convert value to integer.", error=error)
-        handler.log_exception(app_exception)
+#     try:
+#         value = int("abc")
+#         print(value)
+#     except Exception as error:
+#         app_exception = handler.create_exception("Failed to convert value to integer.", error=error)
+#         handler.log_exception(app_exception)

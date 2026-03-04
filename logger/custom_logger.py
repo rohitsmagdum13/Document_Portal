@@ -72,10 +72,10 @@ class CustomLogger:
         return structlog.get_logger("document_portal").bind(logger_name=logger_name)
 
 
-if __name__ == "__main__":
-    custom = CustomLogger()
+# if __name__ == "__main__":
+#     custom = CustomLogger()
 
-    # JSON logger (structlog)
-    json_log = custom.get_logger(__file__)
-    json_log.info("User uploaded a file", user_id=123, filename="report.pdf")
-    json_log.error("Failed to process PDF", error="File not found", user_id=123)
+#     # JSON logger (structlog)
+#     json_log = custom.get_logger(__file__)
+#     json_log.info("User uploaded a file", user_id=123, filename="report.pdf")
+#     json_log.error("Failed to process PDF", error="File not found", user_id=123)

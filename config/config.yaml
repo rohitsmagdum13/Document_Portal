@@ -13,8 +13,19 @@ retriever:
   top_k: 10
 
 llm:
+  active_provider: "openai"
   openai:
     provider: "openai"
     model_name: "gpt-4o-mini"
+    temperature: 0
+    max_output_tokens: 2048
+  gemini:
+    provider: "gemini"
+    model_name: "gemini-2.0-flash"
+    temperature: 0
+    max_output_tokens: 2048
+  anthropic:
+    provider: "anthropic"
+    model_name: "claude-3-5-sonnet-latest"
     temperature: 0
     max_output_tokens: 2048

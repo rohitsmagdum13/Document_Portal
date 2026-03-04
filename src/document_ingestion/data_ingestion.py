@@ -1,120 +1,191 @@
-"""Simple document ingestion helpers – save, read and list PDFs per session."""
+"""Load PDFs from a directory into LangChain Documents."""
 
-import os
-import uuid
+from __future__ import annotations
+
+from datetime import datetime, timezone
 from pathlib import Path
+import hashlib
+import re
+import shutil
+import uuid
 
-import fitz
+from langchain_community.document_loaders import PyPDFLoader
+from langchain_core.documents import Document
 
 from exception.custom_exception import DocumentPortalException
 from logger.custom_logger import CustomLogger
 
 
-class DocumentHandler:
-    """Session-scoped PDF manager with structured logging.
+log = CustomLogger().get_logger(__file__)
 
-    Creates: <base_dir>/<session_id>/*.pdf
+
+def _safe_name(name: str) -> str:
+    """Make a filesystem-safe, lowercase name fragment."""
+    clean = re.sub(r"[^a-zA-Z0-9_-]+", "_", name).strip("_")
+    return clean.lower() or "document"
+
+
+def create_pdf_session_id(pdf_path: Path) -> str:
+    """Create session id per PDF.
+
+    Pattern (industry-style):
+    YYYYMMDDTHHMMSSZ__<file_stem>__<8hex>
     """
+    ts = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    stem = _safe_name(pdf_path.stem)
+    uid = uuid.uuid4().hex[:8]
+    return f"{ts}__{stem}__{uid}"
 
-    def __init__(self, base_dir: str = "data/document_analyzer", session_id: str | None = None):
-        self.base_dir = Path(os.getcwd()) / base_dir
-        self.session_id = session_id or uuid.uuid4().hex[:12]
-        self.session_path = self.base_dir / self.session_id
-        self.session_path.mkdir(parents=True, exist_ok=True)
-        self.log = CustomLogger().get_logger(__file__)
-        self.log.info("Session initialised", session_path=str(self.session_path), session_id=self.session_id)
 
-    # ── Save PDF ──────────────────────────────────────────────────────
-    def save_pdf(self, uploaded_file) -> str:
-        """Save an uploaded/file-like PDF to the session directory."""
+def _file_sha256(path: Path) -> str:
+    """Return SHA-256 hash for a file."""
+    h = hashlib.sha256()
+    with path.open("rb") as f:
+        for chunk in iter(lambda: f.read(1024 * 1024), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def create_session_artifacts(data_dir: str | Path, pdf_path: Path) -> tuple[str, Path, Path, bool]:
+    """Create or reuse one session file for a source PDF.
+
+    Returns
+    -------
+    tuple[str, Path, Path, bool]
+        session_id, session_dir, session_file, reused_existing
+    """
+    root = Path(data_dir)
+    if not root.is_absolute():
+        root = Path.cwd() / root
+
+    sessions_root = root / "sessions"
+    sessions_root.mkdir(parents=True, exist_ok=True)
+
+    src_hash = _file_sha256(pdf_path)
+
+    # Reuse previously-versioned file if same name + same content hash.
+    for existing in sessions_root.glob(f"*/{pdf_path.name}"):
         try:
-            filename = os.path.basename(uploaded_file.name)
-            if not filename.lower().endswith(".pdf"):
-                raise ValueError("Invalid file type. Only PDFs are allowed.")
-            save_path = os.path.join(self.session_path, filename)
-            with open(save_path, "wb") as f:
-                f.write(uploaded_file.read() if hasattr(uploaded_file, "read") else uploaded_file.getbuffer())
-            self.log.info("PDF saved successfully", file=filename, save_path=save_path, session_id=self.session_id)
-            return save_path
-        except Exception as e:
-            self.log.error("Failed to save PDF", error=str(e), session_id=self.session_id)
-            raise DocumentPortalException(f"Failed to save PDF: {e}", e) from e
+            if _file_sha256(existing) == src_hash:
+                return existing.parent.name, existing.parent, existing, True
+        except Exception:
+            continue
 
-    # ── Read PDF ──────────────────────────────────────────────────────
-    def read_pdf(self, pdf_path: str) -> str:
-        """Extract all text from a PDF, page by page."""
-        try:
-            with fitz.open(pdf_path) as doc:
-                chunks = [f"\n--- Page {i + 1} ---\n{doc.load_page(i).get_text()}" for i in range(doc.page_count)]  # type: ignore
-            text = "\n".join(chunks)
-            self.log.info("PDF read successfully", pdf_path=pdf_path, session_id=self.session_id, pages=len(chunks))
-            return text
-        except Exception as e:
-            self.log.error("Failed to read PDF", error=str(e), pdf_path=pdf_path, session_id=self.session_id)
-            raise DocumentPortalException(f"Could not process PDF: {pdf_path}", e) from e
+    session_id = create_pdf_session_id(pdf_path)
+    session_dir = sessions_root / session_id
+    session_dir.mkdir(parents=True, exist_ok=True)
 
-    # ── List PDFs ─────────────────────────────────────────────────────
-    def list_pdfs(self) -> list[str]:
-        """Return sorted names of all PDFs in the session folder."""
-        pdfs = sorted(f.name for f in self.session_path.iterdir() if f.is_file() and f.suffix.lower() == ".pdf")
-        self.log.info("Listed PDFs in session", count=len(pdfs), session_id=self.session_id)
+    copied_file = session_dir / pdf_path.name
+    shutil.copy2(pdf_path, copied_file)
+
+    return session_id, session_dir, copied_file, False
+
+
+def get_pdf_files(data_dir: str | Path = "data/document_analyzer") -> list[Path]:
+    """Return all PDF paths from a directory (recursive)."""
+    try:
+        root = Path(data_dir)
+
+        # Use absolute path for stable logging and loading.
+        if not root.is_absolute():
+            root = Path.cwd() / root
+
+        # Validate input directory.
+        if not root.exists() or not root.is_dir():
+            raise FileNotFoundError(f"Directory not found: {root}")
+
+        # Ignore archived version files under data_dir/sessions.
+        pdfs = sorted(p for p in root.rglob("*.pdf") if "sessions" not in p.relative_to(root).parts)
+        log.info("Discovered PDF files", directory=str(root), count=len(pdfs))
         return pdfs
-
-    # ── Helpers ───────────────────────────────────────────────────────
-    def get_pdf_path(self, file_name: str) -> Path:
-        """Return absolute path for a PDF name (does not check existence)."""
-        if not file_name.lower().endswith(".pdf"):
-            file_name += ".pdf"
-        return self.session_path / file_name
-
-    def __repr__(self) -> str:
-        return f"DocumentHandler(base_dir='{self.base_dir}', session_id='{self.session_id}')"
+    except Exception as e:
+        log.error("Failed to discover PDF files", directory=str(data_dir), error=str(e))
+        raise DocumentPortalException(f"Failed to get PDF files from: {data_dir}", e) from e
 
 
-# ══════════════════════════════════════════════════════════════════════ #
-#  CLI test – run with: python -m src.document_ingestion.data_ingestion #
-# ══════════════════════════════════════════════════════════════════════ #
-if __name__ == "__main__":
-    from datetime import datetime, timezone
+def enrich_metadata(doc: Document, data_dir: str | Path = "data/document_analyzer", session_id: str | None = None, session_file: str | None = None, session_dir: str | None = None) -> Document:
+    """Add structured metadata fields to one document."""
+    src = Path(str(doc.metadata.get("source", "")))
+    base = Path(data_dir)
 
-    LINE = "═" * 60
-    THIN = "─" * 60
-    source_dir = Path(os.getcwd()) / "data" / "document_analyzer"
-    pdf_files = sorted(f for f in source_dir.iterdir() if f.is_file() and f.suffix.lower() == ".pdf")
+    if not base.is_absolute():
+        base = Path.cwd() / base
 
-    print(f"\n{LINE}")
-    print("  DOCUMENT HANDLER — INGESTION TEST")
-    print(f"{LINE}")
-    print(f"  Source directory : {source_dir}")
-    print(f"  PDFs found       : {len(pdf_files)}")
-    print(LINE)
+    # Convert loader page index (0-based) to human-friendly 1-based.
+    page = doc.metadata.get("page")
+    pg_no = (int(page) + 1) if isinstance(page, int) else None
 
-    if not pdf_files:
-        print("  ⚠  No PDFs found. Nothing to ingest.")
-    else:
-        for pdf_path in pdf_files:
-            date_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-            safe_name = pdf_path.stem.replace(" ", "_")
-            session_id = f"{date_str}_{safe_name}"
+    # Build relative path if source is inside base dir.
+    try:
+        rel = str(src.relative_to(base)) if src else ""
+    except Exception:
+        rel = src.name if src else ""
 
-            handler = DocumentHandler(session_id=session_id)
+    doc.metadata.update({"file_name": src.name, "file_stem": src.stem, "file_extension": src.suffix.lower(), "absolute_path": str(src), "relative_path": rel, "page_number": pg_no, "loaded_at_utc": datetime.now(timezone.utc).isoformat(), "session_id": session_id, "session_dir": session_dir, "session_file": session_file})
+    return doc
 
-            with open(pdf_path, "rb") as fh:
-                saved_path = handler.save_pdf(fh)
 
-            text = handler.read_pdf(saved_path)
-            page_count = text.count("--- Page")
+def load_pdfs(data_dir: str | Path = "data/document_analyzer") -> list[Document]:
+    """Load PDFs and create one session folder per PDF file."""
+    try:
+        root = Path(data_dir)
+        if not root.is_absolute():
+            root = Path.cwd() / root
 
-            print(f"\n  {THIN}")
-            print(f"  FILE        : {pdf_path.name}")
-            print(f"  SESSION ID  : {handler.session_id}")
-            print(f"  SESSION DIR : {handler.session_path}")
-            print(f"  SAVED TO    : {saved_path}")
-            print(f"  PAGES       : {page_count}")
-            print(f"  TEXT PREVIEW : {text[:200].strip()}...")
-            print(f"  PDFs IN DIR : {handler.list_pdfs()}")
-            print(f"  {THIN}")
+        # Reuse file discovery for validation + logging.
+        pdfs = get_pdf_files(root)
+        if not pdfs:
+            log.info("No PDF files found", directory=str(root))
+            return []
 
-    print(f"\n{LINE}")
-    print("  DONE")
-    print(f"{LINE}\n")
+        all_docs: list[Document] = []
+
+        for pdf in pdfs:
+            sid, sdir, sfile, reused = create_session_artifacts(root, pdf)
+
+            log.info("Loading PDF", source_pdf=str(pdf), session_id=sid, session_dir=str(sdir), session_file=str(sfile), reused_session_file=reused)
+
+            loader = PyPDFLoader(str(pdf))
+            docs = loader.load()
+
+            docs = [enrich_metadata(doc, root, session_id=sid, session_dir=str(sdir), session_file=str(sfile)) for doc in docs]
+            all_docs.extend(docs)
+
+            log.info("PDF processed", source_pdf=str(pdf), pages=len(docs), session_id=sid)
+
+        log.info("PDF loading completed", directory=str(root), files=len(pdfs), documents=len(all_docs))
+        return all_docs
+    except Exception as e:
+        log.error("Failed to load PDFs", directory=str(data_dir), error=str(e))
+        raise DocumentPortalException(f"Failed to load PDFs from: {data_dir}", e) from e
+
+
+# if __name__ == "__main__":
+#     target_dir = "data/document_analyzer"
+#     print("\n" + "=" * 60)
+#     print("DOCUMENT INGESTION TEST")
+#     print("=" * 60)
+#     print(f"Directory: {target_dir}")
+
+#     try:
+#         documents = load_pdfs(target_dir)
+#         print(f"Documents loaded: {len(documents)}")
+
+#         if documents:
+#             first = documents[0]
+#             print("-" * 60)
+#             print("First document metadata:")
+#             print(first.metadata)
+#             print("-" * 60)
+#             preview = first.page_content[:250].replace("\n", " ").strip()
+#             print(f"Preview: {preview}...")
+#             print(f"Session ID  : {first.metadata.get('session_id')}")
+#             print(f"Session Dir : {first.metadata.get('session_dir')}")
+#             print(f"Session File: {first.metadata.get('session_file')}")
+
+#         print("=" * 60)
+#         print("TEST COMPLETED")
+#         print("=" * 60 + "\n")
+#     except Exception as ex:
+#         print(f"Test failed: {ex}")
+
