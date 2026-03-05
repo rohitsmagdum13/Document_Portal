@@ -1,0 +1,140 @@
+title AI-Powered Vendor Email Query Processing System
+
+// 1. INCOMING EMAIL CHANNEL
+Vendor Email Mailbox [icon: mail, color: blue] {
+  Email Listener [icon: radio, label: "Polling Service"]
+  Spam Filter [icon: shield, label: "Spam & Bounce Filter"]
+}
+
+// 2. EMAIL PRE-PROCESSING
+Email Pre-Processor [icon: filter, color: purple] {
+  Email Parser [icon: file-text, label: "Raw Email Parser"]
+  Metadata Extractor [icon: tag]
+  Thread Classifier [icon: git-merge, label: "Thread Classifier"]
+}
+
+// 3. EMBEDDING ENGINE
+Embedding Engine [icon: zap, color: yellow] {
+  Text Chunker [icon: scissors, label: "Email Chunking"]
+  Vector Generator [icon: cpu, label: "Embedding Generator"]
+  Attachment OCR [icon: image, label: "Attachment Extractor"]
+}
+
+// 4. DATA STORAGE
+Data Storage [icon: database, color: gray] {
+  Vector DB [icon: search, label: "Vector DB (Pinecone)"]
+  Relational DB [icon: aws-rds, label: "PostgreSQL"]
+  Document Store [icon: aws-s3, label: "S3 Storage"]
+  Cache [icon: zap, label: "Redis Cache"]
+}
+
+// 5. PROMPT ROUTER
+Prompt Router [icon: git-branch, color: orange] {
+  Intent Router [icon: compass, label: "Intent-Based Router"]
+  Confidence Gate [icon: sliders, label: "Confidence Gate"]
+  Context Assembler [icon: layers, label: "Context Assembler"]
+  Guardrail Pre-Check [icon: alert-triangle, label: "Pre-Check Guards"]
+}
+
+// 6. LLM PROCESSING
+LLM Processing [icon: cpu, color: green] {
+  Primary LLM [icon: openai, label: "GPT-4 / Claude"]
+  RAG Pipeline [icon: git-pull-request, label: "RAG Pipeline"]
+  Response Generator [icon: edit-3, label: "Response Drafter"]
+  Ticket Intelligence [icon: award, label: "Ticket AI"]
+  Guardrail Post-Check [icon: check-circle, label: "Post-Check Guards"]
+}
+
+// 7. ORCHESTRATION
+Orchestration Engine [icon: server, color: blue] {
+  Workflow Coordinator [icon: activity]
+  Rules Engine [icon: settings, label: "Business Rules"]
+  Event Bus [icon: radio, label: "Kafka / RabbitMQ"]
+  API Gateway [icon: globe, label: "API Gateway"]
+}
+
+// 8. EXTERNAL INTEGRATIONS
+Salesforce [icon: salesforce, color: blue] {
+  Vendor Profiles [icon: users, label: "Vendor Master"]
+  Vendor Matching [icon: search, label: "Multi-Step Matcher"]
+  SF API [icon: cloud, label: "Salesforce API"]
+}
+
+ServiceNow [icon: servicenow, color: green] {
+  Ticket Manager [icon: ticket, label: "Ticket Lifecycle"]
+  SLA Engine [icon: clock, label: "SLA Timer Engine"]
+  Assignment Router [icon: user-check, label: "Assignment Routing"]
+  SNOW API [icon: cloud, label: "ServiceNow API"]
+}
+
+// 9. FINAL RESPONSE
+Final Response [icon: send, color: green] {
+  Auto Send Queue [icon: zap, label: "Auto-Send"]
+  Draft Review Queue [icon: eye, label: "Draft Review"]
+  Escalation Queue [icon: alert-circle, label: "Escalations"]
+  Email Formatter [icon: layout, label: "Template Formatter"]
+  Outbound Service [icon: mail, label: "SMTP / SES"]
+}
+
+// 10. USER DASHBOARD
+User Dashboard [icon: monitor, color: purple] {
+  Agent Dashboard [icon: user, label: "Agent View"]
+  Manager Dashboard [icon: users, label: "Manager View"]
+  Admin Console [icon: settings, label: "Admin Console"]
+  Analytics Dashboard [icon: bar-chart-2, label: "Analytics"]
+}
+
+// 11. AUDIT & GOVERNANCE
+Audit Layer [icon: shield, color: red] {
+  Audit Trail [icon: file-text, label: "Full Audit Trail"]
+  Compliance Log [icon: clipboard, label: "Compliance Log"]
+  Security Scanner [icon: lock, label: "Security Scanner"]
+}
+
+// 12. KNOWLEDGE & FEEDBACK
+Knowledge Feedback [icon: book, color: yellow] {
+  Knowledge Base [icon: book-open, label: "SOPs & FAQs"]
+  Feedback Collector [icon: message-circle, label: "Agent Feedback"]
+  Fine Tuning Pipeline [icon: trending-up, label: "Model Improvement"]
+}
+
+// ===== PRIMARY FLOW CONNECTIONS =====
+Vendor Email Mailbox > Email Pre-Processor: raw email + attachments
+Email Pre-Processor > Embedding Engine: cleaned text + metadata
+Embedding Engine > Data Storage: store embeddings
+Email Pre-Processor > Orchestration Engine: parsed email
+Orchestration Engine > Prompt Router: email + vendor context
+Prompt Router <> Data Storage: query & retrieve context
+Prompt Router > LLM Processing: enriched prompt
+LLM Processing > Orchestration Engine: structured output
+
+// External Integration Connections
+Orchestration Engine <> Salesforce: vendor match
+Orchestration Engine <> ServiceNow: ticket operations
+ServiceNow > Data Storage: ticket data for RAG
+
+// Outbound Flow
+Orchestration Engine > Final Response: approved response
+Final Response --> Vendor Email Mailbox: threaded reply
+
+// Dashboard Connections
+ServiceNow > User Dashboard: ticket & SLA data
+Orchestration Engine > User Dashboard: AI drafts
+User Dashboard > Orchestration Engine: approvals & overrides
+Data Storage > User Dashboard: analytics & reports
+
+// Audit Connections
+Orchestration Engine > Audit Layer: log actions
+LLM Processing > Audit Layer: log prompts & responses
+User Dashboard > Audit Layer: log approvals
+Final Response > Audit Layer: log outbound emails
+
+// Knowledge & Feedback Loop
+User Dashboard > Knowledge Feedback: agent corrections
+Knowledge Feedback > Data Storage: updated embeddings
+Knowledge Feedback --> LLM Processing: fine-tuning data
+
+// Decision Path Connections
+Prompt Router --> User Dashboard: low confidence triage [color: orange]
+ServiceNow --> User Dashboard: SLA breach alerts [color: red]
+LLM Processing --> Audit Layer: guardrail violations [color: red]

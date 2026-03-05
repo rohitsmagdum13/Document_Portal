@@ -1,0 +1,430 @@
+<mxfile host="app.diagrams.net" modified="2026-03-04T00:00:00.000Z" agent="Claude" version="24.0.0" type="device">
+  <diagram id="vendor-email-automation" name="Vendor Support Email Automation">
+    <mxGraphModel dx="1600" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1050" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <!-- ============================================ -->
+        <!-- TITLE -->
+        <!-- ============================================ -->
+        <mxCell id="title" value="&lt;font style=&quot;font-size:16px;&quot;&gt;&lt;b&gt;Vendor Support Email Automation — Architecture Overview&lt;/b&gt;&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;fontSize=16;fontColor=#37474F;" vertex="1" parent="1">
+          <mxGeometry x="460" y="10" width="500" height="30" as="geometry"/>
+        </mxCell>
+
+        <!-- ============================================ -->
+        <!-- GROUP 1: EMAIL INTAKE (Top-Left, Blue) -->
+        <!-- ============================================ -->
+        <mxCell id="g1" value="&lt;b&gt;Email Intake&lt;/b&gt;" style="swimlane;startSize=26;fillColor=#E3F2FD;strokeColor=#1565C0;rounded=1;arcSize=6;fontStyle=1;fontSize=13;fontColor=#1565C0;html=1;collapsible=0;" vertex="1" parent="1">
+          <mxGeometry x="30" y="55" width="310" height="310" as="geometry"/>
+        </mxCell>
+
+        <!-- Vendor Actor -->
+        <mxCell id="vendor" value="&lt;b&gt;Vendor&lt;/b&gt;" style="shape=mxgraph.flowchart.multi-document;whiteSpace=wrap;html=1;fillColor=#1565C0;fontColor=#FFFFFF;strokeColor=#0D47A1;fontSize=11;shadow=1;" vertex="1" parent="g1">
+          <mxGeometry x="95" y="40" width="120" height="55" as="geometry"/>
+        </mxCell>
+
+        <!-- Email Provider -->
+        <mxCell id="email-provider" value="&lt;b&gt;Email Provider&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:9px;&quot;&gt;Vendor Support Mailbox&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1976D2;fontColor=#FFFFFF;strokeColor=#0D47A1;fontSize=11;shadow=1;" vertex="1" parent="g1">
+          <mxGeometry x="80" y="120" width="150" height="50" as="geometry"/>
+        </mxCell>
+
+        <!-- Email API -->
+        <mxCell id="email-api" value="&lt;b&gt;Email API&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:9px;&quot;&gt;Read, Extract, Send&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1976D2;fontColor=#FFFFFF;strokeColor=#0D47A1;fontSize=11;shadow=1;" vertex="1" parent="g1">
+          <mxGeometry x="80" y="205" width="150" height="50" as="geometry"/>
+        </mxCell>
+
+        <!-- Arrows inside Email Intake -->
+        <mxCell id="g1-a1" value="&lt;font style=&quot;font-size:9px;color:#1565C0;&quot;&gt;sends email&lt;/font&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#1565C0;strokeWidth=1.5;fontSize=9;" edge="1" source="vendor" target="email-provider" parent="g1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="g1-a2" value="&lt;font style=&quot;font-size:9px;color:#1565C0;&quot;&gt;fetch emails&lt;/font&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#1565C0;strokeWidth=1.5;fontSize=9;" edge="1" source="email-provider" target="email-api" parent="g1">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- ============================================ -->
+        <!-- GROUP 2: DATA STORAGE (Bottom-Left, Green) -->
+        <!-- ============================================ -->
+        <mxCell id="g2" value="&lt;b&gt;Data Storage&lt;/b&gt;" style="swimlane;startSize=26;fillColor=#E8F5E9;strokeColor=#2E7D32;rounded=1;arcSize=6;fontStyle=1;fontSize=13;fontColor=#2E7D32;html=1;collapsible=0;" vertex="1" parent="1">
+          <mxGeometry x="30" y="400" width="310" height="240" as="geometry"/>
+        </mxCell>
+
+        <!-- Document DB -->
+        <mxCell id="doc-db" value="&lt;b&gt;Document Database&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:9px;&quot;&gt;Email Content, Vendor Info,&lt;br&gt;Thread History, Embeddings&lt;/font&gt;" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#388E3C;fontColor=#FFFFFF;strokeColor=#1B5E20;fontSize=11;size=12;shadow=1;" vertex="1" parent="g2">
+          <mxGeometry x="25" y="45" width="170" height="80" as="geometry"/>
+        </mxCell>
+
+        <!-- Object Storage -->
+        <mxCell id="obj-store" value="&lt;b&gt;Object Storage&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:9px;&quot;&gt;Attachments &amp;amp; Files&lt;/font&gt;" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#388E3C;fontColor=#FFFFFF;strokeColor=#1B5E20;fontSize=11;size=12;shadow=1;" vertex="1" parent="g2">
+          <mxGeometry x="25" y="145" width="170" height="75" as="geometry"/>
+        </mxCell>
+
+        <!-- Embedding Store -->
+        <mxCell id="embed-store" value="&lt;b&gt;Embedding&lt;br&gt;Store&lt;/b&gt;" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#66BB6A;fontColor=#FFFFFF;strokeColor=#2E7D32;fontSize=10;size=10;shadow=1;" vertex="1" parent="g2">
+          <mxGeometry x="220" y="55" width="75" height="65" as="geometry"/>
+        </mxCell>
+
+        <!-- ============================================ -->
+        <!-- ARROW: Email API → Data Storage -->
+        <!-- ============================================ -->
+        <mxCell id="ea-ds1" value="&lt;font style=&quot;font-size:9px;color:#2E7D32;&quot;&gt;store content&lt;/font&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#2E7D32;strokeWidth=1.5;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" source="email-api" target="doc-db" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="185" y="380"/>
+              <mxPoint x="140" y="380"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="ea-ds2" value="&lt;font style=&quot;font-size:9px;color:#2E7D32;&quot;&gt;store attachments&lt;/font&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#2E7D32;strokeWidth=1.5;exitX=1;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" source="email-api" target="obj-store" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="255" y="390"/>
+              <mxPoint x="140" y="390"/>
+              <mxPoint x="140" y="535"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- ============================================ -->
+        <!-- GROUP 3: AI / LLM PROCESSING (Center, Purple) -->
+        <!-- ============================================ -->
+        <mxCell id="g3" value="&lt;b&gt;AI / LLM Processing Pipeline&lt;/b&gt;" style="swimlane;startSize=28;fillColor=#F3E5F5;strokeColor=#7B1FA2;rounded=1;arcSize=6;fontStyle=1;fontSize=13;fontColor=#7B1FA2;html=1;collapsible=0;" vertex="1" parent="1">
+          <mxGeometry x="370" y="55" width="830" height="585" as="geometry"/>
+        </mxCell>
+
+        <!-- Row 1: Email Type Check -->
+        <mxCell id="ai-typecheck" value="&lt;b&gt;Email Type &amp;amp;&lt;br&gt;Attachment Check&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#7B1FA2;fontColor=#FFFFFF;strokeColor=#4A148C;fontSize=11;shadow=1;" vertex="1" parent="g3">
+          <mxGeometry x="30" y="50" width="150" height="55" as="geometry"/>
+        </mxCell>
+
+        <!-- Embedding Decision Diamond -->
+        <mxCell id="ai-embed-check" value="&lt;b&gt;Embedding&lt;br&gt;Exists?&lt;/b&gt;" style="rhombus;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#7B1FA2;fontSize=11;strokeWidth=2;" vertex="1" parent="g3">
+          <mxGeometry x="230" y="42" width="110" height="75" as="geometry"/>
+        </mxCell>
+
+        <!-- Load Embedding -->
+        <mxCell id="ai-load-embed" value="&lt;b&gt;Load&lt;br&gt;Embedding&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#AB47BC;fontColor=#FFFFFF;strokeColor=#7B1FA2;fontSize=10;shadow=1;" vertex="1" parent="g3">
+          <mxGeometry x="390" y="35" width="100" height="40" as="geometry"/>
+        </mxCell>
+
+        <!-- Generate Embedding -->
+        <mxCell id="ai-gen-embed" value="&lt;b&gt;Generate&lt;br&gt;Embedding&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#AB47BC;fontColor=#FFFFFF;strokeColor=#7B1FA2;fontSize=10;shadow=1;" vertex="1" parent="g3">
+          <mxGeometry x="390" y="85" width="100" height="40" as="geometry"/>
+        </mxCell>
+
+        <!-- Arrows Row 1 -->
+        <mxCell id="g3-a1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#7B1FA2;strokeWidth=1.5;" edge="1" source="ai-typecheck" target="ai-embed-check" parent="g3">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="g3-a2" value="&lt;font style=&quot;font-size:9px;color:#4CAF50;&quot;&gt;Yes&lt;/font&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#4CAF50;strokeWidth=1.5;" edge="1" source="ai-embed-check" target="ai-load-embed" parent="g3">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="g3-a3" value="&lt;font style=&quot;font-size:9px;color:#E53935;&quot;&gt;No&lt;/font&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#E53935;strokeWidth=1.5;" edge="1" source="ai-embed-check" target="ai-gen-embed" parent="g3">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- Row 2: Intent Classification & Routing -->
+        <mxCell id="ai-intent" value="&lt;b&gt;Intent Classification&lt;br&gt;&amp;amp; Routing&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#7B1FA2;fontColor=#FFFFFF;strokeColor=#4A148C;fontSize=11;shadow=1;" vertex="1" parent="g3">
+          <mxGeometry x="30" y="160" width="160" height="55" as="geometry"/>
+        </mxCell>
+
+        <!-- Condition branches -->
+        <mxCell id="ai-cond1" value="&lt;b&gt;Condition 1&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#CE93D8;fontColor=#FFFFFF;strokeColor=#7B1FA2;fontSize=10;" vertex="1" parent="g3">
+          <mxGeometry x="250" y="140" width="100" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="ai-cond2" value="&lt;b&gt;Condition 2&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#CE93D8;fontColor=#FFFFFF;strokeColor=#7B1FA2;fontSize=10;" vertex="1" parent="g3">
+          <mxGeometry x="250" y="175" width="100" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="ai-cond3" value="&lt;b&gt;Condition 3&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#CE93D8;fontColor=#FFFFFF;strokeColor=#7B1FA2;fontSize=10;" vertex="1" parent="g3">
+          <mxGeometry x="250" y="210" width="100" height="30" as="geometry"/>
+        </mxCell>
+        <mxCell id="ai-condN" value="&lt;b&gt;Condition N&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#CE93D8;fontColor=#FFFFFF;strokeColor=#7B1FA2;fontSize=10;" vertex="1" parent="g3">
+          <mxGeometry x="250" y="248" width="100" height="30" as="geometry"/>
+        </mxCell>
+
+        <!-- Prompt Template Selectors -->
+        <mxCell id="ai-tmpl1" value="&lt;font style=&quot;font-size:9px;&quot;&gt;Case 1&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1BEE7;strokeColor=#7B1FA2;fontSize=9;" vertex="1" parent="g3">
+          <mxGeometry x="400" y="140" width="70" height="28" as="geometry"/>
+        </mxCell>
+        <mxCell id="ai-tmpl2" value="&lt;font style=&quot;font-size:9px;&quot;&gt;Case 2&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1BEE7;strokeColor=#7B1FA2;fontSize=9;" vertex="1" parent="g3">
+          <mxGeometry x="400" y="175" width="70" height="28" as="geometry"/>
+        </mxCell>
+        <mxCell id="ai-tmpl3" value="&lt;font style=&quot;font-size:9px;&quot;&gt;Case 3&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1BEE7;strokeColor=#7B1FA2;fontSize=9;" vertex="1" parent="g3">
+          <mxGeometry x="400" y="210" width="70" height="28" as="geometry"/>
+        </mxCell>
+        <mxCell id="ai-tmplN" value="&lt;font style=&quot;font-size:9px;&quot;&gt;Case N&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1BEE7;strokeColor=#7B1FA2;fontSize=9;" vertex="1" parent="g3">
+          <mxGeometry x="400" y="248" width="70" height="28" as="geometry"/>
+        </mxCell>
+
+        <!-- Prompt Template Selector Label -->
+        <mxCell id="tmpl-label" value="&lt;font style=&quot;font-size:9px;color:#7B1FA2;&quot;&gt;&lt;i&gt;Prompt Template&lt;br&gt;Selectors&lt;/i&gt;&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;" vertex="1" parent="g3">
+          <mxGeometry x="390" y="278" width="90" height="30" as="geometry"/>
+        </mxCell>
+
+        <!-- Arrows: Intent → Conditions → Templates -->
+        <mxCell id="g3-b1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#7B1FA2;strokeWidth=1;" edge="1" source="ai-intent" target="ai-cond1" parent="g3">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="g3-b2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#7B1FA2;strokeWidth=1;" edge="1" source="ai-intent" target="ai-cond2" parent="g3">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="g3-b3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#7B1FA2;strokeWidth=1;" edge="1" source="ai-intent" target="ai-cond3" parent="g3">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="g3-bN" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#7B1FA2;strokeWidth=1;" edge="1" source="ai-intent" target="ai-condN" parent="g3">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="g3-c1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#7B1FA2;strokeWidth=1;" edge="1" source="ai-cond1" target="ai-tmpl1" parent="g3">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="g3-c2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#7B1FA2;strokeWidth=1;" edge="1" source="ai-cond2" target="ai-tmpl2" parent="g3">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="g3-c3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#7B1FA2;strokeWidth=1;" edge="1" source="ai-cond3" target="ai-tmpl3" parent="g3">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="g3-cN" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#7B1FA2;strokeWidth=1;" edge="1" source="ai-condN" target="ai-tmplN" parent="g3">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- Row 3: Prompt Assembly -->
+        <mxCell id="ai-prompt-asm" value="&lt;b&gt;Prompt Assembly&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:9px;&quot;&gt;Context + History +&lt;br&gt;Selected Template&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#7B1FA2;fontColor=#FFFFFF;strokeColor=#4A148C;fontSize=11;shadow=1;" vertex="1" parent="g3">
+          <mxGeometry x="520" y="170" width="160" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- Arrows: Templates → Prompt Assembly -->
+        <mxCell id="g3-d1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#7B1FA2;strokeWidth=1.5;" edge="1" source="ai-tmpl1" target="ai-prompt-asm" parent="g3">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="g3-dN" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#7B1FA2;strokeWidth=1.5;" edge="1" source="ai-tmplN" target="ai-prompt-asm" parent="g3">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <!-- Embeddings merge into Prompt Assembly -->
+        <mxCell id="g3-e-merge" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#7B1FA2;strokeWidth=1.5;dashed=1;" edge="1" source="ai-load-embed" target="ai-prompt-asm" parent="g3">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="500" y="55"/>
+              <mxPoint x="500" y="130"/>
+              <mxPoint x="600" y="130"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="g3-e-merge2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#7B1FA2;strokeWidth=1.5;dashed=1;" edge="1" source="ai-gen-embed" target="ai-prompt-asm" parent="g3">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="510" y="105"/>
+              <mxPoint x="510" y="130"/>
+              <mxPoint x="600" y="130"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Row 4: LLM Invocation (large box) -->
+        <mxCell id="ai-llm-box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EDE7F6;strokeColor=#7B1FA2;strokeWidth=2;dashed=1;" vertex="1" parent="g3">
+          <mxGeometry x="100" y="320" width="620" height="130" as="geometry"/>
+        </mxCell>
+        <mxCell id="ai-llm-title" value="&lt;b&gt;LLM Invocation&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;fontSize=13;fontColor=#4A148C;fontStyle=1;" vertex="1" parent="g3">
+          <mxGeometry x="340" y="322" width="130" height="25" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="ai-entity" value="&lt;b&gt;Entity&lt;br&gt;Extraction&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#9C27B0;fontColor=#FFFFFF;strokeColor=#6A1B9A;fontSize=10;shadow=1;" vertex="1" parent="g3">
+          <mxGeometry x="120" y="358" width="110" height="45" as="geometry"/>
+        </mxCell>
+        <mxCell id="ai-classify" value="&lt;b&gt;Email&lt;br&gt;Classification&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:8px;&quot;&gt;Invoice / Payment /&lt;br&gt;Escalation / No-Action&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#9C27B0;fontColor=#FFFFFF;strokeColor=#6A1B9A;fontSize=10;shadow=1;" vertex="1" parent="g3">
+          <mxGeometry x="248" y="350" width="130" height="62" as="geometry"/>
+        </mxCell>
+        <mxCell id="ai-summarize" value="&lt;b&gt;Thread&lt;br&gt;Summarization&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#9C27B0;fontColor=#FFFFFF;strokeColor=#6A1B9A;fontSize=10;shadow=1;" vertex="1" parent="g3">
+          <mxGeometry x="398" y="358" width="110" height="45" as="geometry"/>
+        </mxCell>
+        <mxCell id="ai-response-gen" value="&lt;b&gt;Response&lt;br&gt;Generation&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#9C27B0;fontColor=#FFFFFF;strokeColor=#6A1B9A;fontSize=10;shadow=1;" vertex="1" parent="g3">
+          <mxGeometry x="528" y="358" width="110" height="45" as="geometry"/>
+        </mxCell>
+
+        <!-- Arrow: Prompt Assembly → LLM box -->
+        <mxCell id="g3-f1" value="&lt;font style=&quot;font-size:9px;color:#7B1FA2;&quot;&gt;invoke LLM&lt;/font&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#7B1FA2;strokeWidth=2;" edge="1" source="ai-prompt-asm" target="ai-llm-box" parent="g3">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="600" y="280"/>
+              <mxPoint x="410" y="280"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Row 5: Final Response -->
+        <mxCell id="ai-final" value="&lt;b&gt;Final Response&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:9px;&quot;&gt;Draft Email, Summary,&lt;br&gt;Classification Result&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#4A148C;fontColor=#FFFFFF;strokeColor=#311B92;fontSize=12;shadow=1;strokeWidth=2;" vertex="1" parent="g3">
+          <mxGeometry x="315" y="490" width="180" height="60" as="geometry"/>
+        </mxCell>
+
+        <!-- Arrow: LLM → Final Response -->
+        <mxCell id="g3-g1" value="&lt;font style=&quot;font-size:9px;color:#7B1FA2;&quot;&gt;output&lt;/font&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#7B1FA2;strokeWidth=2;" edge="1" source="ai-llm-box" target="ai-final" parent="g3">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- Arrow: Embedding check → Row 2 connector -->
+        <mxCell id="g3-row-connect" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#7B1FA2;strokeWidth=1.5;" edge="1" source="ai-typecheck" target="ai-intent" parent="g3">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="15" y="78"/>
+              <mxPoint x="15" y="188"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+
+        <!-- ============================================ -->
+        <!-- GROUP 4: HUMAN REVIEW & ACTIONS (Right, Amber) -->
+        <!-- ============================================ -->
+        <mxCell id="g4" value="&lt;b&gt;Human Review &amp;amp; Actions&lt;/b&gt;" style="swimlane;startSize=26;fillColor=#FFF8E1;strokeColor=#F9A825;rounded=1;arcSize=6;fontStyle=1;fontSize=13;fontColor=#E65100;html=1;collapsible=0;" vertex="1" parent="1">
+          <mxGeometry x="370" y="680" width="830" height="310" as="geometry"/>
+        </mxCell>
+
+        <!-- Human User -->
+        <mxCell id="human-user" value="&lt;b&gt;Support&lt;br&gt;Agent&lt;/b&gt;" style="shape=mxgraph.basic.person;whiteSpace=wrap;html=1;fillColor=#F57F17;fontColor=#FFFFFF;strokeColor=#E65100;fontSize=11;shadow=1;" vertex="1" parent="g4">
+          <mxGeometry x="25" y="55" width="70" height="80" as="geometry"/>
+        </mxCell>
+
+        <!-- UI Dashboard -->
+        <mxCell id="ui-dashboard" value="&lt;b&gt;UI Dashboard&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:9px;&quot;&gt;Inbox, AI Drafts, Summaries,&lt;br&gt;Classification Results&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FF8F00;fontColor=#FFFFFF;strokeColor=#E65100;fontSize=12;shadow=1;strokeWidth=2;" vertex="1" parent="g4">
+          <mxGeometry x="150" y="60" width="210" height="70" as="geometry"/>
+        </mxCell>
+
+        <!-- Action: Acknowledge -->
+        <mxCell id="act-ack" value="&lt;b&gt;Acknowledge&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:9px;&quot;&gt;Send Ack Email&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFB300;fontColor=#FFFFFF;strokeColor=#E65100;fontSize=11;shadow=1;" vertex="1" parent="g4">
+          <mxGeometry x="430" y="40" width="140" height="45" as="geometry"/>
+        </mxCell>
+
+        <!-- Action: Edit & Send Draft -->
+        <mxCell id="act-edit" value="&lt;b&gt;Edit &amp;amp; Send Draft&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:9px;&quot;&gt;Review AI Draft → Modify → Send&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFB300;fontColor=#FFFFFF;strokeColor=#E65100;fontSize=11;shadow=1;" vertex="1" parent="g4">
+          <mxGeometry x="430" y="95" width="180" height="48" as="geometry"/>
+        </mxCell>
+
+        <!-- Action: View Summary -->
+        <mxCell id="act-summary" value="&lt;b&gt;View Summary&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:9px;&quot;&gt;AI-Generated Thread Summary&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFB300;fontColor=#FFFFFF;strokeColor=#E65100;fontSize=11;shadow=1;" vertex="1" parent="g4">
+          <mxGeometry x="430" y="153" width="170" height="45" as="geometry"/>
+        </mxCell>
+
+        <!-- Send Email box -->
+        <mxCell id="send-email" value="&lt;b&gt;Send via&lt;br&gt;Email API&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1976D2;fontColor=#FFFFFF;strokeColor=#0D47A1;fontSize=11;shadow=1;" vertex="1" parent="g4">
+          <mxGeometry x="680" y="70" width="110" height="55" as="geometry"/>
+        </mxCell>
+
+        <!-- Arrows inside g4 -->
+        <mxCell id="g4-a1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#E65100;strokeWidth=1.5;" edge="1" source="human-user" target="ui-dashboard" parent="g4">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="g4-a2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#E65100;strokeWidth=1.5;" edge="1" source="ui-dashboard" target="act-ack" parent="g4">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="g4-a3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#E65100;strokeWidth=1.5;" edge="1" source="ui-dashboard" target="act-edit" parent="g4">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="g4-a4" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#E65100;strokeWidth=1.5;" edge="1" source="ui-dashboard" target="act-summary" parent="g4">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="g4-a5" value="&lt;font style=&quot;font-size:9px;color:#1565C0;&quot;&gt;approved email&lt;/font&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#1565C0;strokeWidth=2;" edge="1" source="act-ack" target="send-email" parent="g4">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="g4-a6" value="&lt;font style=&quot;font-size:9px;color:#1565C0;&quot;&gt;send draft&lt;/font&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#1565C0;strokeWidth=2;" edge="1" source="act-edit" target="send-email" parent="g4">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- ============================================ -->
+        <!-- CROSS-GROUP ARROWS -->
+        <!-- ============================================ -->
+
+        <!-- Email API → AI Pipeline (triggers processing) -->
+        <mxCell id="x-ea-ai" value="&lt;font style=&quot;font-size:9px;color:#7B1FA2;&quot;&gt;extracted email data&lt;/font&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#7B1FA2;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" source="email-api" target="ai-typecheck" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="355" y="285"/>
+              <mxPoint x="355" y="132"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Data Storage ↔ AI Pipeline (bidirectional) -->
+        <mxCell id="x-ds-ai" value="&lt;font style=&quot;font-size:9px;color:#2E7D32;&quot;&gt;read vendor context &amp;amp; history&lt;/font&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#2E7D32;strokeWidth=1.5;dashed=1;exitX=1;exitY=0;exitDx=0;exitDy=12;exitDxe=0;exitDye=0;" edge="1" source="doc-db" target="ai-intent" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="210" y="457"/>
+              <mxPoint x="350" y="457"/>
+              <mxPoint x="350" y="243"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Embedding Store ↔ AI Pipeline -->
+        <mxCell id="x-es-ai" value="&lt;font style=&quot;font-size:9px;color:#2E7D32;&quot;&gt;embeddings&lt;/font&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#66BB6A;strokeWidth=1.5;dashed=1;" edge="1" source="embed-store" target="ai-embed-check" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="288" y="430"/>
+              <mxPoint x="360" y="430"/>
+              <mxPoint x="360" y="135"/>
+              <mxPoint x="655" y="135"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- AI Final Response → UI Dashboard -->
+        <mxCell id="x-ai-ui" value="&lt;font style=&quot;font-size:9px;color:#E65100;&quot;&gt;AI output (drafts, summaries, classifications)&lt;/font&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#E65100;strokeWidth=2;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" source="ai-final" target="ui-dashboard" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="775" y="660"/>
+              <mxPoint x="625" y="660"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Data Storage → UI Dashboard -->
+        <mxCell id="x-ds-ui" value="&lt;font style=&quot;font-size:9px;color:#2E7D32;&quot;&gt;fetch emails &amp;amp;&lt;br&gt;attachments&lt;/font&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#2E7D32;strokeWidth=1.5;dashed=1;" edge="1" source="obj-store" target="ui-dashboard" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="140" y="660"/>
+              <mxPoint x="350" y="660"/>
+              <mxPoint x="350" y="775"/>
+              <mxPoint x="520" y="775"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Send Email → Email Provider (back to vendor) -->
+        <mxCell id="x-send-vendor" value="&lt;font style=&quot;font-size:9px;color:#1565C0;&quot;&gt;send email&lt;br&gt;to vendor&lt;/font&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#1565C0;strokeWidth=2;" edge="1" source="send-email" target="email-provider" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1220" y="787"/>
+              <mxPoint x="1220" y="980"/>
+              <mxPoint x="20" y="980"/>
+              <mxPoint x="20" y="200"/>
+              <mxPoint x="80" y="200"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- AI Pipeline writes results back to storage -->
+        <mxCell id="x-ai-ds" value="&lt;font style=&quot;font-size:9px;color:#2E7D32;&quot;&gt;write results&lt;/font&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#2E7D32;strokeWidth=1.5;dashed=1;" edge="1" source="ai-final" target="doc-db" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="685" y="610"/>
+              <mxPoint x="685" y="650"/>
+              <mxPoint x="345" y="650"/>
+              <mxPoint x="345" y="480"/>
+              <mxPoint x="200" y="480"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- UI Dashboard → AI Pipeline (trigger processing) -->
+        <mxCell id="x-ui-ai" value="&lt;font style=&quot;font-size:9px;color:#7B1FA2;&quot;&gt;trigger AI&lt;br&gt;processing&lt;/font&gt;" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#7B1FA2;strokeWidth=1.5;dashed=1;" edge="1" source="ui-dashboard" target="ai-prompt-asm" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="625" y="670"/>
+              <mxPoint x="990" y="670"/>
+              <mxPoint x="990" y="280"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

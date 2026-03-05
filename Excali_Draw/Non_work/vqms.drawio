@@ -1,0 +1,366 @@
+<mxfile host="65bd71144e">
+    <diagram id="lslvcefWgZwUDcjTaicp" name="Page-1">
+        <mxGraphModel dx="787" dy="779" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+            </root>
+        </mxGraphModel>
+    </diagram>
+    <diagram id="vqms-architecture" name="VQMS Architecture">
+        <mxGraphModel dx="787" dy="779" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1700" pageHeight="3400" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="2" value="1. External Input Layer" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontStyle=1;fontSize=16;verticalAlign=top;dashed=1;strokeWidth=2;" vertex="1" parent="1">
+                    <mxGeometry x="50" y="20" width="1500" height="280" as="geometry"/>
+                </mxCell>
+                <mxCell id="10" value="&lt;b&gt;Vendor (External)&lt;/b&gt;" style="shape=hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=13;fontStyle=1;size=0.15;" vertex="1" parent="1">
+                    <mxGeometry x="680" y="55" width="200" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="11" value="&lt;b&gt;Email Channel (Mailbox)&lt;/b&gt;&lt;hr&gt;&lt;font style=&quot;font-size:10px;&quot;&gt;Sender&lt;br&gt;Subject&lt;br&gt;Timestamp&lt;br&gt;Thread ID&lt;br&gt;Attachments&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;verticalAlign=top;" vertex="1" parent="1">
+                    <mxGeometry x="620" y="145" width="320" height="130" as="geometry"/>
+                </mxCell>
+                <mxCell id="500" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jetSize=auto;html=1;strokeWidth=2;strokeColor=#d79b00;" edge="1" parent="1" source="10" target="11">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="3" value="2. Core System Architecture" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontStyle=1;fontSize=16;verticalAlign=top;dashed=1;strokeWidth=2;" vertex="1" parent="1">
+                    <mxGeometry x="50" y="330" width="1500" height="590" as="geometry"/>
+                </mxCell>
+                <mxCell id="20" value="&lt;b&gt;Integration / Orchestration Layer&lt;/b&gt;&lt;hr&gt;&lt;font style=&quot;font-size:10px;&quot;&gt;Routing &amp;nbsp;|&amp;nbsp; Retry Handling &amp;nbsp;|&amp;nbsp; Logging &amp;nbsp;|&amp;nbsp; Governance Controls&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=13;verticalAlign=middle;strokeWidth=2;" vertex="1" parent="1">
+                    <mxGeometry x="380" y="370" width="800" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="501" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jetSize=auto;html=1;strokeWidth=2;strokeColor=#6c8ebf;" edge="1" parent="1" source="11" target="20">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="21" value="&lt;b&gt;Salesforce – Vendor Master Data&lt;/b&gt;&lt;hr&gt;&lt;font style=&quot;font-size:10px;&quot;&gt;Vendor ID&lt;br&gt;Vendor Status&lt;br&gt;Vendor Tier&lt;br&gt;Contract Details&lt;br&gt;SLA Category&lt;br&gt;Vendor Contacts&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;verticalAlign=top;strokeWidth=2;" vertex="1" parent="1">
+                    <mxGeometry x="80" y="490" width="370" height="200" as="geometry"/>
+                </mxCell>
+                <mxCell id="22" value="&lt;b&gt;Vendor Matching&lt;/b&gt;&lt;hr&gt;&lt;font style=&quot;font-size:10px;&quot;&gt;Email Match&lt;br&gt;Vendor ID Match&lt;br&gt;Name Similarity&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;verticalAlign=top;" vertex="1" parent="1">
+                    <mxGeometry x="120" y="720" width="290" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="22b" value="Return Vendor Context" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" vertex="1" parent="1">
+                    <mxGeometry x="160" y="845" width="200" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="502" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jetSize=auto;html=1;strokeWidth=1;" edge="1" parent="1" source="21" target="22">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="502b" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jetSize=auto;html=1;strokeWidth=1;" edge="1" parent="1" source="22" target="22b">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="23" value="&lt;b&gt;GenAI Engine&lt;/b&gt;&lt;hr&gt;&lt;font style=&quot;font-size:10px;&quot;&gt;Intent Classification&lt;br&gt;Entity Extraction&lt;br&gt;Urgency Detection&lt;br&gt;Sentiment Analysis&lt;br&gt;Confidence Scoring&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;verticalAlign=top;strokeWidth=2;" vertex="1" parent="1">
+                    <mxGeometry x="520" y="490" width="370" height="200" as="geometry"/>
+                </mxCell>
+                <mxCell id="24" value="Confidence&lt;br&gt;Score?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;fontStyle=1;" vertex="1" parent="1">
+                    <mxGeometry x="635" y="720" width="140" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="25" value="Auto Process" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;fontStyle=1;" vertex="1" parent="1">
+                    <mxGeometry x="540" y="840" width="130" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="26" value="Human Triage Queue" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;fontStyle=1;" vertex="1" parent="1">
+                    <mxGeometry x="740" y="840" width="150" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="503" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jetSize=auto;html=1;strokeWidth=1;" edge="1" parent="1" source="23" target="24">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="504" value="High" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jetSize=auto;html=1;strokeWidth=1;fontStyle=1;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="24" target="25">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="505" value="Low" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jetSize=auto;html=1;strokeWidth=1;fontStyle=1;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="24" target="26">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="27" value="&lt;b&gt;ServiceNow – Ticketing System&lt;/b&gt;&lt;hr&gt;&lt;font style=&quot;font-size:10px;&quot;&gt;Create Ticket&lt;br&gt;Update Ticket&lt;br&gt;Populate Ticket Fields&lt;br&gt;SLA Tracking&lt;br&gt;Audit Logging&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;verticalAlign=top;strokeWidth=2;" vertex="1" parent="1">
+                    <mxGeometry x="960" y="490" width="370" height="200" as="geometry"/>
+                </mxCell>
+                <mxCell id="28" value="New Email&lt;br&gt;Thread?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;fontStyle=1;" vertex="1" parent="1">
+                    <mxGeometry x="1075" y="720" width="140" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="29" value="Create Ticket" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;fontStyle=1;" vertex="1" parent="1">
+                    <mxGeometry x="980" y="840" width="130" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="30" value="Append to Existing Ticket" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;fontStyle=1;" vertex="1" parent="1">
+                    <mxGeometry x="1170" y="840" width="170" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="506" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jetSize=auto;html=1;strokeWidth=1;" edge="1" parent="1" source="27" target="28">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="507" value="YES" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jetSize=auto;html=1;strokeWidth=1;fontStyle=1;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="28" target="29">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="508" value="NO" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jetSize=auto;html=1;strokeWidth=1;fontStyle=1;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="28" target="30">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="509" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jetSize=auto;html=1;strokeWidth=2;strokeColor=#9673a6;" edge="1" parent="1" source="20" target="21">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="510" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jetSize=auto;html=1;strokeWidth=2;strokeColor=#9673a6;" edge="1" parent="1" source="20" target="23">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="511" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jetSize=auto;html=1;strokeWidth=2;strokeColor=#9673a6;" edge="1" parent="1" source="20" target="27">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="4" value="3. Detailed Processing Flow" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontStyle=1;fontSize=16;verticalAlign=top;dashed=1;strokeWidth=2;" vertex="1" parent="1">
+                    <mxGeometry x="50" y="960" width="1500" height="2350" as="geometry"/>
+                </mxCell>
+                <mxCell id="100" value="STEP 1 — Email Intake" style="text;html=1;fontSize=13;fontStyle=5;fillColor=#e1d5e7;strokeColor=#9673a6;rounded=1;whiteSpace=wrap;align=center;" vertex="1" parent="1">
+                    <mxGeometry x="80" y="1000" width="220" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="101" value="Mailbox" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
+                    <mxGeometry x="350" y="995" width="140" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="102" value="Capture Metadata" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" vertex="1" parent="1">
+                    <mxGeometry x="570" y="995" width="170" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="103" value="Send to GenAI" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" vertex="1" parent="1">
+                    <mxGeometry x="820" y="995" width="150" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="520" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeWidth=1;" edge="1" parent="1" source="101" target="102">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="521" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeWidth=1;" edge="1" parent="1" source="102" target="103">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="110" value="STEP 2 — GenAI Understanding" style="text;html=1;fontSize=13;fontStyle=5;fillColor=#e1d5e7;strokeColor=#9673a6;rounded=1;whiteSpace=wrap;align=center;" vertex="1" parent="1">
+                    <mxGeometry x="80" y="1075" width="260" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="111" value="&lt;b&gt;GenAI Understanding&lt;/b&gt;&lt;hr&gt;&lt;font style=&quot;font-size:10px;&quot;&gt;Intent Classification&lt;br&gt;Entity Extraction&lt;br&gt;Confidence Scoring&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;verticalAlign=top;" vertex="1" parent="1">
+                    <mxGeometry x="480" y="1065" width="300" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="112" value="Confidence?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;fontStyle=1;" vertex="1" parent="1">
+                    <mxGeometry x="560" y="1195" width="140" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="113" value="Auto Process" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;fontStyle=1;" vertex="1" parent="1">
+                    <mxGeometry x="400" y="1305" width="140" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="114" value="Human Triage" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;fontStyle=1;" vertex="1" parent="1">
+                    <mxGeometry x="720" y="1305" width="140" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="522" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeWidth=1;" edge="1" parent="1" source="103" target="111">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="523" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeWidth=1;" edge="1" parent="1" source="111" target="112">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="524" value="High" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeWidth=1;fontStyle=1;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="112" target="113">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="525" value="Low" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeWidth=1;fontStyle=1;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="112" target="114">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="120" value="STEP 3 — Vendor Matching" style="text;html=1;fontSize=13;fontStyle=5;fillColor=#e1d5e7;strokeColor=#9673a6;rounded=1;whiteSpace=wrap;align=center;" vertex="1" parent="1">
+                    <mxGeometry x="80" y="1385" width="240" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="121" value="&lt;b&gt;Salesforce Vendor Matching&lt;/b&gt;&lt;hr&gt;&lt;font style=&quot;font-size:10px;&quot;&gt;Email Match&lt;br&gt;Vendor ID Match&lt;br&gt;Name Similarity&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;verticalAlign=top;" vertex="1" parent="1">
+                    <mxGeometry x="450" y="1375" width="300" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="122" value="Return Vendor Context" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" vertex="1" parent="1">
+                    <mxGeometry x="500" y="1500" width="200" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="526" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeWidth=1;" edge="1" parent="1" source="113" target="121">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="527" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeWidth=1;" edge="1" parent="1" source="121" target="122">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="130" value="STEP 4 — Ticket Creation / Update" style="text;html=1;fontSize=13;fontStyle=5;fillColor=#e1d5e7;strokeColor=#9673a6;rounded=1;whiteSpace=wrap;align=center;" vertex="1" parent="1">
+                    <mxGeometry x="80" y="1575" width="280" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="131" value="New Thread?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;fontStyle=1;" vertex="1" parent="1">
+                    <mxGeometry x="540" y="1570" width="140" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="132" value="Create Ticket" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;fontStyle=1;" vertex="1" parent="1">
+                    <mxGeometry x="400" y="1680" width="140" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="133" value="Append to Ticket" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;fontStyle=1;" vertex="1" parent="1">
+                    <mxGeometry x="700" y="1680" width="160" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="528" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeWidth=1;" edge="1" parent="1" source="122" target="131">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="529" value="YES" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeWidth=1;fontStyle=1;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="131" target="132">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="530" value="NO" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeWidth=1;fontStyle=1;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="131" target="133">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="140" value="STEP 5 — Acknowledgement Email" style="text;html=1;fontSize=13;fontStyle=5;fillColor=#e1d5e7;strokeColor=#9673a6;rounded=1;whiteSpace=wrap;align=center;" vertex="1" parent="1">
+                    <mxGeometry x="80" y="1760" width="280" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="141" value="&lt;b&gt;GenAI Drafts Response&lt;/b&gt;&lt;hr&gt;&lt;font style=&quot;font-size:10px;&quot;&gt;Ticket Number&lt;br&gt;SLA Timeline&lt;br&gt;Response Template&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;verticalAlign=top;" vertex="1" parent="1">
+                    <mxGeometry x="450" y="1750" width="300" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="142" value="Confidence?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;fontStyle=1;" vertex="1" parent="1">
+                    <mxGeometry x="540" y="1870" width="140" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="143" value="Auto Send" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;fontStyle=1;" vertex="1" parent="1">
+                    <mxGeometry x="400" y="1980" width="130" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="144" value="Draft for Human Review" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;fontStyle=1;" vertex="1" parent="1">
+                    <mxGeometry x="690" y="1980" width="180" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="531" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeWidth=1;" edge="1" parent="1" source="132" target="141">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="532" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeWidth=1;" edge="1" parent="1" source="141" target="142">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="533" value="High" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeWidth=1;fontStyle=1;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="142" target="143">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="534" value="Low" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeWidth=1;fontStyle=1;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="142" target="144">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="150" value="STEP 6 — Intelligent Routing" style="text;html=1;fontSize=13;fontStyle=5;fillColor=#e1d5e7;strokeColor=#9673a6;rounded=1;whiteSpace=wrap;align=center;" vertex="1" parent="1">
+                    <mxGeometry x="80" y="2060" width="260" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="151" value="&lt;b&gt;Intent Category Routing&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
+                    <mxGeometry x="490" y="2055" width="230" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="152" value="Finance" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" vertex="1" parent="1">
+                    <mxGeometry x="230" y="2130" width="110" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="153" value="Procurement" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" vertex="1" parent="1">
+                    <mxGeometry x="400" y="2130" width="130" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="154" value="IT" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" vertex="1" parent="1">
+                    <mxGeometry x="590" y="2130" width="100" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="155" value="Legal" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" vertex="1" parent="1">
+                    <mxGeometry x="750" y="2130" width="110" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="156" value="&lt;b&gt;Vendor Tier + Urgency → Priority Adjustment&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=10;" vertex="1" parent="1">
+                    <mxGeometry x="960" y="2130" width="260" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="535" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeWidth=1;" edge="1" parent="1" source="143" target="151">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="536" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeWidth=1;" edge="1" parent="1" source="151" target="152">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="537" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeWidth=1;" edge="1" parent="1" source="151" target="153">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="538" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeWidth=1;" edge="1" parent="1" source="151" target="154">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="539" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeWidth=1;" edge="1" parent="1" source="151" target="155">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="540" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeWidth=1;dashed=1;" edge="1" parent="1" source="151" target="156">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="170" value="STEP 7 — AI Copilot Investigation" style="text;html=1;fontSize=13;fontStyle=5;fillColor=#e1d5e7;strokeColor=#9673a6;rounded=1;whiteSpace=wrap;align=center;" vertex="1" parent="1">
+                    <mxGeometry x="80" y="2215" width="280" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="171" value="&lt;b&gt;Agent Dashboard&lt;/b&gt;&lt;hr&gt;&lt;font style=&quot;font-size:10px;&quot;&gt;Vendor Snapshot&lt;br&gt;Ticket History&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;verticalAlign=top;" vertex="1" parent="1">
+                    <mxGeometry x="330" y="2205" width="250" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="172" value="&lt;b&gt;GenAI Suggestions&lt;/b&gt;&lt;hr&gt;&lt;font style=&quot;font-size:10px;&quot;&gt;Resolution Recommendations&lt;br&gt;Draft Responses&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;verticalAlign=top;" vertex="1" parent="1">
+                    <mxGeometry x="680" y="2205" width="280" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="541" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeWidth=1;" edge="1" parent="1" source="152" target="171">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="542" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeWidth=1;dashed=1;" edge="1" parent="1" source="171" target="172">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="180" value="STEP 8 — Hold / Resume Logic" style="text;html=1;fontSize=13;fontStyle=5;fillColor=#e1d5e7;strokeColor=#9673a6;rounded=1;whiteSpace=wrap;align=center;" vertex="1" parent="1">
+                    <mxGeometry x="80" y="2330" width="260" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="181" value="Docs&lt;br&gt;Required?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;fontStyle=1;" vertex="1" parent="1">
+                    <mxGeometry x="340" y="2330" width="150" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="182" value="Await Vendor&lt;br&gt;&lt;font style=&quot;font-size:10px;&quot;&gt;(SLA Paused)&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;" vertex="1" parent="1">
+                    <mxGeometry x="320" y="2440" width="180" height="45" as="geometry"/>
+                </mxCell>
+                <mxCell id="183" value="Internal&lt;br&gt;Dependency?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;fontStyle=1;" vertex="1" parent="1">
+                    <mxGeometry x="680" y="2330" width="160" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="184" value="Await Internal Team&lt;br&gt;&lt;font style=&quot;font-size:10px;&quot;&gt;(SLA Paused)&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;" vertex="1" parent="1">
+                    <mxGeometry x="660" y="2440" width="200" height="45" as="geometry"/>
+                </mxCell>
+                <mxCell id="543" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeWidth=1;" edge="1" parent="1" source="171" target="181">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="544" value="YES" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeWidth=1;fontStyle=1;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="181" target="182">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="545" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeWidth=1;" edge="1" parent="1" source="172" target="183">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="546" value="YES" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeWidth=1;fontStyle=1;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="183" target="184">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="190" value="STEP 9 — Escalation Logic" style="text;html=1;fontSize=13;fontStyle=5;fillColor=#e1d5e7;strokeColor=#9673a6;rounded=1;whiteSpace=wrap;align=center;" vertex="1" parent="1">
+                    <mxGeometry x="80" y="2530" width="240" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="191" value="&lt;b&gt;SLA Escalation Thresholds&lt;/b&gt;&lt;hr&gt;&lt;font style=&quot;font-size:10px;&quot;&gt;70% SLA Consumed → Warning&lt;br&gt;85% SLA Consumed → Escalate&lt;br&gt;95% SLA Consumed → Critical&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;verticalAlign=top;strokeWidth=2;" vertex="1" parent="1">
+                    <mxGeometry x="340" y="2520" width="300" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="192" value="&lt;b&gt;Trigger Alert Escalation&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=12;" vertex="1" parent="1">
+                    <mxGeometry x="740" y="2530" width="200" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="193" value="&lt;b&gt;Auto Escalate When:&lt;/b&gt;&lt;br&gt;&lt;font style=&quot;font-size:10px;&quot;&gt;• High Tier Vendor&lt;br&gt;• Negative Sentiment Detected&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;verticalAlign=top;" vertex="1" parent="1">
+                    <mxGeometry x="700" y="2590" width="280" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="547" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeWidth=1;" edge="1" parent="1" source="182" target="191">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="548" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeWidth=2;strokeColor=#b85450;" edge="1" parent="1" source="191" target="192">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="549" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeWidth=1;dashed=1;" edge="1" parent="1" source="192" target="193">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="200" value="STEP 10 — Resolution and Closure" style="text;html=1;fontSize=13;fontStyle=5;fillColor=#e1d5e7;strokeColor=#9673a6;rounded=1;whiteSpace=wrap;align=center;" vertex="1" parent="1">
+                    <mxGeometry x="80" y="2700" width="280" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="201" value="&lt;b&gt;Resolved → GenAI Drafts Resolution Email&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
+                    <mxGeometry x="420" y="2700" width="340" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="202" value="Vendor&lt;br&gt;Confirms?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;fontStyle=1;" vertex="1" parent="1">
+                    <mxGeometry x="530" y="2770" width="140" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="203" value="Close Ticket" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;fontStyle=1;" vertex="1" parent="1">
+                    <mxGeometry x="370" y="2880" width="130" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="204" value="Auto Close&lt;br&gt;&lt;font style=&quot;font-size:9px;&quot;&gt;(After Policy Window)&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" vertex="1" parent="1">
+                    <mxGeometry x="690" y="2880" width="170" height="45" as="geometry"/>
+                </mxCell>
+                <mxCell id="205" value="Vendor Replies&lt;br&gt;After Closure?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;fontStyle=1;" vertex="1" parent="1">
+                    <mxGeometry x="510" y="2960" width="170" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="206" value="Reopen Ticket" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;fontStyle=1;" vertex="1" parent="1">
+                    <mxGeometry x="350" y="3080" width="140" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="207" value="&lt;b&gt;Generate Final Audit Summary&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;strokeWidth=2;" vertex="1" parent="1">
+                    <mxGeometry x="650" y="3080" width="260" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="550" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeWidth=1;" edge="1" parent="1" source="191" target="201">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="551" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeWidth=1;" edge="1" parent="1" source="201" target="202">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="552" value="YES" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeWidth=1;fontStyle=1;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="202" target="203">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="553" value="No Response" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeWidth=1;fontStyle=1;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="202" target="204">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="554" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeWidth=1;" edge="1" parent="1" source="203" target="205">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="555" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeWidth=1;dashed=1;" edge="1" parent="1" source="204" target="205">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="556" value="YES" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeWidth=1;fontStyle=1;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="205" target="206">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="557" value="NO" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeWidth=1;fontStyle=1;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" parent="1" source="205" target="207">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

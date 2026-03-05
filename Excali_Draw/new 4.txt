@@ -1,0 +1,99 @@
+title AI-Powered Vendor Email Query Processing System
+direction right
+title AI-Powered Vendor Email Query Processing System
+
+// INBOUND CHANNEL
+Vendor Email Mailbox [icon: mail, color: blue] {
+  Incoming Email [icon: inbox]
+}
+
+// ORCHESTRATION LAYER
+Orchestration Engine [icon: server, color: purple] {
+  Business Rules Engine [icon: settings]
+  Audit Logger [icon: file-text]
+  Retry Handler [icon: refresh-cw]
+  Security Scanner [icon: shield]
+}
+
+// GenAI ENGINE
+GenAI Processing [icon: cpu, color: green] {
+  Email Parser [icon: code]
+  Intent Classifier [icon: tag]
+  Entity Extractor [icon: search]
+  Urgency Detector [icon: alert-triangle]
+  Confidence Scorer [icon: percent]
+  Response Drafter [icon: edit]
+  Ticket Summarizer [icon: align-left]
+  AI Copilot [icon: zap]
+}
+
+// SALESFORCE
+Salesforce [icon: salesforce, color: blue] {
+  Vendor Profile [icon: user]
+  Vendor Status [icon: toggle-left]
+  Contract Metadata [icon: file]
+  SLA Terms [icon: clock]
+  Vendor Matching [icon: git-merge]
+}
+
+// SERVICENOW
+ServiceNow [icon: servicenow, color: green] {
+  Ticket Creation [icon: plus-circle]
+  Categorization [icon: folder]
+  State Machine [icon: git-branch]
+  Assignment Routing [icon: users]
+  SLA Timer [icon: watch]
+  Duplicate Detection [icon: copy]
+  Attachment Storage [icon: paperclip]
+}
+
+// OUTBOUND CHANNEL
+Outbound Email [icon: send, color: orange] {
+  Auto Send Queue [icon: zap]
+  Draft Review Queue [icon: eye]
+  Escalation Queue [icon: alert-circle]
+}
+
+// HUMAN OVERSIGHT
+Human Layer [icon: users, color: red] {
+  Triage Queue [icon: inbox]
+  Agent Workspace [icon: monitor]
+  Manager Review [icon: user-check]
+  Governance Console [icon: sliders]
+}
+
+// MAIN FLOW CONNECTIONS
+Incoming Email > Business Rules Engine: raw email
+Business Rules Engine > Email Parser: email + metadata
+Email Parser > Intent Classifier
+Intent Classifier > Entity Extractor
+Entity Extractor > Confidence Scorer
+
+
+Ticket Creation > Categorization
+Categorization > Assignment Routing
+
+Business Rules Engine > Response Drafter: draft request
+Business Rules Engine > Auto Send Queue: high confidence
+Business Rules Engine > Draft Review Queue: low confidence
+
+// DECISION PATHS
+Confidence Scorer --> Triage Queue: low confidence
+SLA Timer --> Manager Review: SLA breach risk
+
+// REOPEN FLOW
+Incoming Email --> State Machine: vendor reply after closure
+
+legend {
+  [connection: ">", label: "Primary data flow"]
+  [connection: "-->", label: "Exception / escalation path"]
+}
+Orchestration Engine > Salesforce: match request
+Orchestration Engine > ServiceNow: create ticket
+Orchestration Engine --> Human Layer: blocked vendor
+Salesforce > Orchestration Engine: vendor context
+ServiceNow > Orchestration Engine: ticket ID
+Human Layer --> Orchestration Engine: approvals
+Business Rules Engine < Confidence Scorer: structured extraction
+Business Rules Engine < Response Drafter: drafted email
+Incoming Email < Auto Send Queue: threaded reply
