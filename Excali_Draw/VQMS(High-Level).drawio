@@ -1,97 +1,13 @@
 <mxfile host="localhost" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36" version="29.5.2">
   <diagram name="Page-1" id="trLCB6tHwNSt7VPzd03l">
-    <mxGraphModel dx="2216" dy="914" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="10420" dy="6230" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
         <mxCell id="uglUL90IuALFhYJAWCXx-6" parent="0" value="Title &amp; Background" />
-        <mxCell id="uglUL90IuALFhYJAWCXx-10" parent="uglUL90IuALFhYJAWCXx-6" style="rounded=1;fillColor=#1a237e;fontColor=#ffffff;fontSize=22;fontStyle=1;strokeColor=#0D47A1;arcSize=10;align=center;verticalAlign=middle;whiteSpace=wrap;html=1;shadow=1;" value="Vendor Query Management — High-Level Architecture" vertex="1">
-          <mxGeometry height="55" width="1100" x="200" y="10" as="geometry" />
-        </mxCell>
-        <mxCell id="uglUL90IuALFhYJAWCXx-11" parent="uglUL90IuALFhYJAWCXx-6" style="rounded=0;fillColor=none;fontColor=#78909C;fontSize=11;fontStyle=2;strokeColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;html=1;" value="Salesforce + ServiceNow + GenAI + Email Integration" vertex="1">
-          <mxGeometry height="25" width="1100" x="20" y="67" as="geometry" />
-        </mxCell>
         <mxCell id="uglUL90IuALFhYJAWCXx-7" parent="0" value="Architecture Components" />
-        <mxCell id="uglUL90IuALFhYJAWCXx-12" parent="uglUL90IuALFhYJAWCXx-7" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#E8EAF6;strokeColor=#3949AB;fontColor=#1a237e;fontSize=13;fontStyle=1;" value="Vendor" vertex="1">
-          <mxGeometry height="70" width="50" x="40" y="155" as="geometry" />
-        </mxCell>
-        <mxCell id="uglUL90IuALFhYJAWCXx-13" parent="uglUL90IuALFhYJAWCXx-7" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E3F2FD;strokeColor=#1565C0;fontColor=#0D47A1;fontSize=12;arcSize=12;shadow=1;" value="&lt;b style=&quot;font-size:14px;&quot;&gt;Email Channel&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:10px;&quot;&gt;Inbound / Outbound&lt;/span&gt;" vertex="1">
-          <mxGeometry height="75" width="155" x="190" y="140" as="geometry" />
-        </mxCell>
-        <mxCell id="uglUL90IuALFhYJAWCXx-14" parent="uglUL90IuALFhYJAWCXx-7" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF3E0;strokeColor=#E65100;fontColor=#BF360C;fontSize=12;arcSize=12;shadow=1;" value="&lt;b style=&quot;font-size:15px;&quot;&gt;Integration / Orchestration Layer&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:10px;&quot;&gt;Middleware &amp;bull; Business Rules&lt;br&gt;Retry Logic &amp;bull; Audit Logging&lt;br&gt;Governance Controls&lt;/span&gt;" vertex="1">
-          <mxGeometry height="110" width="300" x="490" y="120" as="geometry" />
-        </mxCell>
-        <mxCell id="uglUL90IuALFhYJAWCXx-15" parent="uglUL90IuALFhYJAWCXx-7" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F3E5F5;strokeColor=#6A1B9A;fontColor=#4A148C;fontSize=12;arcSize=12;shadow=1;" value="&lt;b style=&quot;font-size:14px;&quot;&gt;Internal Teams&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:10px;&quot;&gt;Support / Triage&lt;br&gt;Finance &amp;bull; Procurement&lt;br&gt;IT &amp;bull; Legal&lt;br&gt;Managers / Escalation&lt;/span&gt;" vertex="1">
-          <mxGeometry height="110" width="190" x="940" y="115" as="geometry" />
-        </mxCell>
-        <mxCell id="uglUL90IuALFhYJAWCXx-16" parent="uglUL90IuALFhYJAWCXx-7" style="shape=hexagon;perimeter=hexagonPerimeter2;whiteSpace=wrap;html=1;fixedSize=1;size=25;fillColor=#E8F5E9;strokeColor=#2E7D32;fontColor=#1B5E20;fontSize=12;shadow=1;" value="&lt;b style=&quot;font-size:14px;&quot;&gt;GenAI Engine&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:9px;&quot;&gt;Intent Classification&lt;br&gt;Entity Extraction&lt;br&gt;Sentiment / Urgency&lt;br&gt;Response Drafting&lt;/span&gt;" vertex="1">
-          <mxGeometry height="105" width="220" x="220" y="370" as="geometry" />
-        </mxCell>
-        <mxCell id="uglUL90IuALFhYJAWCXx-17" parent="uglUL90IuALFhYJAWCXx-7" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=12;fillColor=#E3F2FD;strokeColor=#0D47A1;fontColor=#0D47A1;fontSize=12;shadow=1;" value="&lt;b style=&quot;font-size:14px;&quot;&gt;Salesforce&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:9px;&quot;&gt;Vendor Master Data&lt;br&gt;Contacts &amp;bull; Contracts&lt;br&gt;SLA / Status / Tier&lt;/span&gt;" vertex="1">
-          <mxGeometry height="105" width="195" x="540" y="370" as="geometry" />
-        </mxCell>
-        <mxCell id="uglUL90IuALFhYJAWCXx-18" parent="uglUL90IuALFhYJAWCXx-7" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=12;fillColor=#FCE4EC;strokeColor=#C62828;fontColor=#B71C1C;fontSize=12;shadow=1;" value="&lt;b style=&quot;font-size:14px;&quot;&gt;ServiceNow&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:9px;&quot;&gt;Ticket Lifecycle&lt;br&gt;SLA Tracking &amp;bull; Routing&lt;br&gt;Audit Logs &amp;bull; Reporting&lt;/span&gt;" vertex="1">
-          <mxGeometry height="105" width="195" x="850" y="370" as="geometry" />
-        </mxCell>
-        <mxCell id="uglUL90IuALFhYJAWCXx-19" parent="uglUL90IuALFhYJAWCXx-7" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ECEFF1;strokeColor=#455A64;fontColor=#263238;fontSize=11;arcSize=8;dashed=1;dashPattern=5 3;" value="&lt;b style=&quot;font-size:12px;&quot;&gt;Governance &amp;amp; Controls&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:9px;&quot;&gt;Confidence Thresholds &amp;bull; Approved Templates &amp;bull; Audit Logs &amp;bull; RBAC &amp;bull; Prompt Versioning &amp;bull; Attachment Security&lt;/span&gt;" vertex="1">
-          <mxGeometry height="50" width="840" x="220" y="500" as="geometry" />
-        </mxCell>
-        <mxCell id="uglUL90IuALFhYJAWCXx-20" parent="uglUL90IuALFhYJAWCXx-7" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E0F7FA;strokeColor=#00838F;fontColor=#004D40;fontSize=11;arcSize=8;" value="&lt;b style=&quot;font-size:12px;&quot;&gt;KPIs &amp;amp; Monitoring&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:9px;&quot;&gt;First Response Time &amp;bull; Resolution Time &amp;bull; SLA Adherence &amp;bull; Reopen Rate &amp;bull; Automation Rate &amp;bull; Email Quality&lt;/span&gt;" vertex="1">
-          <mxGeometry height="45" width="840" x="220" y="560" as="geometry" />
-        </mxCell>
         <mxCell id="uglUL90IuALFhYJAWCXx-8" parent="0" value="Connections" />
-        <mxCell id="uglUL90IuALFhYJAWCXx-21" edge="1" parent="uglUL90IuALFhYJAWCXx-8" source="uglUL90IuALFhYJAWCXx-12" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#3949AB;strokeWidth=2;fontSize=9;fontColor=#3949AB;fontStyle=1;endArrow=classic;startArrow=classic;labelBackgroundColor=#FFFFFF;verticalAlign=bottom;" target="uglUL90IuALFhYJAWCXx-13" value="Emails">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="uglUL90IuALFhYJAWCXx-22" edge="1" parent="uglUL90IuALFhYJAWCXx-8" source="uglUL90IuALFhYJAWCXx-13" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#E65100;strokeWidth=2;fontSize=9;fontColor=#E65100;fontStyle=1;endArrow=classic;startArrow=classic;labelBackgroundColor=#FFFFFF;verticalAlign=bottom;" target="uglUL90IuALFhYJAWCXx-14" value="Email + Metadata">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="uglUL90IuALFhYJAWCXx-23" edge="1" parent="uglUL90IuALFhYJAWCXx-8" source="uglUL90IuALFhYJAWCXx-14" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#6A1B9A;strokeWidth=2;fontSize=9;fontColor=#6A1B9A;fontStyle=1;endArrow=classic;startArrow=classic;labelBackgroundColor=#FFFFFF;verticalAlign=bottom;" target="uglUL90IuALFhYJAWCXx-15" value="Routing / Escalation">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="uglUL90IuALFhYJAWCXx-24" edge="1" parent="uglUL90IuALFhYJAWCXx-8" source="uglUL90IuALFhYJAWCXx-14" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#2E7D32;strokeWidth=2;fontSize=9;fontColor=#2E7D32;fontStyle=1;endArrow=classic;startArrow=classic;labelBackgroundColor=#FFFFFF;exitX=0.1;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;align=left;" target="uglUL90IuALFhYJAWCXx-16" value="NLP / Drafts">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="uglUL90IuALFhYJAWCXx-25" edge="1" parent="uglUL90IuALFhYJAWCXx-8" source="uglUL90IuALFhYJAWCXx-14" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#0D47A1;strokeWidth=2;fontSize=9;fontColor=#0D47A1;fontStyle=1;endArrow=classic;startArrow=classic;labelBackgroundColor=#FFFFFF;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="uglUL90IuALFhYJAWCXx-17" value="Vendor Match">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="uglUL90IuALFhYJAWCXx-26" edge="1" parent="uglUL90IuALFhYJAWCXx-8" source="uglUL90IuALFhYJAWCXx-14" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#C62828;strokeWidth=2;fontSize=9;fontColor=#C62828;fontStyle=1;endArrow=classic;startArrow=classic;labelBackgroundColor=#FFFFFF;exitX=0.9;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;align=right;" target="uglUL90IuALFhYJAWCXx-18" value="Ticket / SLA">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
         <mxCell id="uglUL90IuALFhYJAWCXx-9" parent="0" value="Annotations" />
-        <mxCell id="uglUL90IuALFhYJAWCXx-27" parent="uglUL90IuALFhYJAWCXx-9" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#C8E6C9;strokeColor=#388E3C;fontColor=#1B5E20;fontSize=10;fontStyle=1;arcSize=40;" value="① Email Intake" vertex="1">
-          <mxGeometry height="30" width="150" x="20" y="290" as="geometry" />
-        </mxCell>
-        <mxCell id="uglUL90IuALFhYJAWCXx-28" parent="uglUL90IuALFhYJAWCXx-9" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#C8E6C9;strokeColor=#388E3C;fontColor=#1B5E20;fontSize=10;fontStyle=1;arcSize=40;" value="② AI Parse &amp; Extract" vertex="1">
-          <mxGeometry height="30" width="150" x="20" y="326" as="geometry" />
-        </mxCell>
-        <mxCell id="uglUL90IuALFhYJAWCXx-29" parent="uglUL90IuALFhYJAWCXx-9" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#C8E6C9;strokeColor=#388E3C;fontColor=#1B5E20;fontSize=10;fontStyle=1;arcSize=40;" value="③ Vendor Match" vertex="1">
-          <mxGeometry height="30" width="150" x="20" y="362" as="geometry" />
-        </mxCell>
-        <mxCell id="uglUL90IuALFhYJAWCXx-30" parent="uglUL90IuALFhYJAWCXx-9" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#C8E6C9;strokeColor=#388E3C;fontColor=#1B5E20;fontSize=10;fontStyle=1;arcSize=40;" value="④ Ticket Create/Update" vertex="1">
-          <mxGeometry height="30" width="150" x="20" y="398" as="geometry" />
-        </mxCell>
-        <mxCell id="uglUL90IuALFhYJAWCXx-31" parent="uglUL90IuALFhYJAWCXx-9" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#C8E6C9;strokeColor=#388E3C;fontColor=#1B5E20;fontSize=10;fontStyle=1;arcSize=40;" value="⑤ ACK &amp; Route" vertex="1">
-          <mxGeometry height="30" width="150" x="20" y="434" as="geometry" />
-        </mxCell>
-        <mxCell id="uglUL90IuALFhYJAWCXx-32" parent="uglUL90IuALFhYJAWCXx-9" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#C8E6C9;strokeColor=#388E3C;fontColor=#1B5E20;fontSize=10;fontStyle=1;arcSize=40;" value="⑥ Investigate &amp; Resolve" vertex="1">
-          <mxGeometry height="30" width="150" x="20" y="470" as="geometry" />
-        </mxCell>
-        <mxCell id="uglUL90IuALFhYJAWCXx-33" parent="uglUL90IuALFhYJAWCXx-9" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#C8E6C9;strokeColor=#388E3C;fontColor=#1B5E20;fontSize=10;fontStyle=1;arcSize=40;" value="⑦ Close / Reopen" vertex="1">
-          <mxGeometry height="30" width="150" x="20" y="506" as="geometry" />
-        </mxCell>
-        <mxCell id="uglUL90IuALFhYJAWCXx-34" parent="uglUL90IuALFhYJAWCXx-9" style="rounded=0;fillColor=none;strokeColor=none;fontColor=#1B5E20;fontSize=11;fontStyle=5;align=left;whiteSpace=wrap;html=1;" value="Process Flow Steps" vertex="1">
-          <mxGeometry height="25" width="160" x="20" y="260" as="geometry" />
-        </mxCell>
-        <mxCell id="uglUL90IuALFhYJAWCXx-35" parent="uglUL90IuALFhYJAWCXx-9" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FAFAFA;strokeColor=#BDBDBD;fontColor=#37474F;fontSize=10;align=left;verticalAlign=top;spacingLeft=10;spacingTop=6;arcSize=8;" value="&lt;b style=&quot;font-size:12px;&quot;&gt;Legend&lt;/b&gt;&lt;hr size=&quot;1&quot;&gt;&lt;span style=&quot;font-size:10px;&quot;&gt;&lt;font color=&quot;#E65100&quot;&gt;&amp;#9632;&lt;/font&gt; Orange — Orchestration Hub&lt;br&gt;&lt;font color=&quot;#2E7D32&quot;&gt;&amp;#11042;&lt;/font&gt; Green Hex — GenAI Engine&lt;br&gt;&lt;font color=&quot;#0D47A1&quot;&gt;&amp;#9644;&lt;/font&gt; Blue Cylinder — Salesforce&lt;br&gt;&lt;font color=&quot;#C62828&quot;&gt;&amp;#9644;&lt;/font&gt; Red Cylinder — ServiceNow&lt;br&gt;&lt;font color=&quot;#6A1B9A&quot;&gt;&amp;#9632;&lt;/font&gt; Purple — Internal Teams&lt;br&gt;&lt;font color=&quot;#455A64&quot;&gt;&amp;#9634;&lt;/font&gt; Gray Dashed — Governance&lt;br&gt;&lt;font color=&quot;#00838F&quot;&gt;&amp;#9632;&lt;/font&gt; Teal — KPIs / Monitoring&lt;br&gt;&amp;#8596; Bidirectional Data Flow&lt;/span&gt;" vertex="1">
-          <mxGeometry height="190" width="220" x="1160" y="115" as="geometry" />
-        </mxCell>
-        <mxCell id="uglUL90IuALFhYJAWCXx-36" parent="uglUL90IuALFhYJAWCXx-9" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF8E1;strokeColor=#F9A825;fontColor=#37474F;fontSize=10;align=left;verticalAlign=top;spacingLeft=10;spacingTop=6;arcSize=8;" value="&lt;b style=&quot;font-size:12px;&quot;&gt;Automation Scope&lt;/b&gt;&lt;hr size=&quot;1&quot;&gt;&lt;span style=&quot;font-size:10px;&quot;&gt;&lt;b&gt;&amp;#10003; In Scope:&lt;/b&gt;&lt;br&gt;&amp;bull; Email understanding &amp;amp; extraction&lt;br&gt;&amp;bull; Vendor ID &amp;amp; context fetch&lt;br&gt;&amp;bull; Ticket CRUD &amp;amp; field population&lt;br&gt;&amp;bull; Auto-ack &amp;amp; email drafting&lt;br&gt;&amp;bull; Routing, SLA alerts, summaries&lt;br&gt;&lt;br&gt;&lt;b&gt;&amp;#10005; Out of Scope (Phase 1):&lt;/b&gt;&lt;br&gt;&amp;bull; Payment approvals&lt;br&gt;&amp;bull; Contract modifications&lt;br&gt;&amp;bull; Legal decisions&lt;/span&gt;" vertex="1">
-          <mxGeometry height="185" width="220" x="1160" y="330" as="geometry" />
-        </mxCell>
-        <mxCell id="uglUL90IuALFhYJAWCXx-37" parent="uglUL90IuALFhYJAWCXx-9" style="shape=callout;whiteSpace=wrap;html=1;perimeter=calloutPerimeter;size=12;position=0.5;position2=1;base=15;fillColor=#FFECB3;strokeColor=#FF8F00;fontColor=#E65100;fontSize=9;fontStyle=1;rounded=1;" value="Low confidence → Human Triage Queue" vertex="1">
-          <mxGeometry height="30" width="210" x="460" y="92" as="geometry" />
-        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
