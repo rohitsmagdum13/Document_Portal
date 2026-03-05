@@ -615,3 +615,539 @@
   ├── Developers  ──► Map integrations and workflows from Sections 2 and 6
   ├── QA          ──► Create test scenarios from hold/resume rules and reopen logic
   └── Stakeholders──► Validate scope and governance from Sections 7–9
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+╔══════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
+║                        VENDOR QUERY MANAGEMENT SYSTEM (VQMS) — SYSTEM ARCHITECTURE                            ║
+║                        Salesforce + ServiceNow + GenAI + Email | Enterprise-Grade Flow                         ║
+╚══════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝
+
+
+════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+ LAYER 1 — VENDOR LAYER
+════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+
+                                    ┌───────────────────────────────┐
+                                    │           VENDOR              │
+                                    │  (External Entity / Supplier) │
+                                    │                               │
+                                    │  • Raises queries via email   │
+                                    │  • Provides documents         │
+                                    │  • Confirms resolution        │
+                                    └───────────────┬───────────────┘
+                                                    │
+                                                    │ Sends Email (query / reply / docs)
+                                                    ▼
+
+════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+ LAYER 2 — COMMUNICATION LAYER
+════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+
+                                    ┌───────────────────────────────┐
+                                    │      VENDOR SUPPORT           │
+                                    │        MAILBOX                │
+                                    │  (Shared Email Inbox)         │
+                                    │                               │
+                                    │  • Inbound email landing      │
+                                    │  • Thread continuity          │
+                                    │  • Outbound responses         │
+                                    └───────────────┬───────────────┘
+                                                    │
+                                                    │ New email event detected
+                                                    ▼
+                                    ┌───────────────────────────────┐
+                                    │    EMAIL INGESTION SERVICE    │
+                                    │                               │
+                                    │  • Poll / webhook listener    │
+                                    │  • Capture metadata:          │
+                                    │    - Sender, Subject, Time    │
+                                    │    - Thread ID, Message ID    │
+                                    │    - Attachments list         │
+                                    │  • Attachment security scan   │
+                                    │  • Forward to pre-processing  │
+                                    └───────────────┬───────────────┘
+                                                    │
+                                                    │ Raw email payload + metadata
+                                                    ▼
+                                    ┌───────────────────────────────┐
+                                    │    EMAIL PRE-PROCESSING       │
+                                    │         LAYER                 │
+                                    │                               │
+                                    │  • Strip signatures/footers   │
+                                    │  • Normalize encoding         │
+                                    │  • Extract clean body text    │
+                                    │  • Parse thread references    │
+                                    │  • Detect reply vs new email  │
+                                    │  • Identify attachments type  │
+                                    └───────────────┬───────────────┘
+                                                    │
+                                                    │ Cleaned email + structured metadata
+                                                    ▼
+
+════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+ LAYER 3 — AI PROCESSING LAYER
+════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+
+                                    ┌───────────────────────────────┐
+                                    │      GenAI PROCESSING         │
+                                    │         ENGINE                │
+                                    │                               │
+                                    │  Subcomponents:               │
+                                    └───────────────┬───────────────┘
+                                                    │
+                          ┌─────────────────────────┼─────────────────────────┐
+                          │                         │                         │
+                          ▼                         ▼                         ▼
+            ┌─────────────────────┐   ┌─────────────────────┐   ┌─────────────────────┐
+            │  INTENT             │   │  ENTITY             │   │  SENTIMENT &        │
+            │  CLASSIFICATION     │   │  EXTRACTION         │   │  URGENCY            │
+            │                     │   │                     │   │  DETECTION           │
+            │  • Payment Delay    │   │  • Vendor Name      │   │                     │
+            │  • Invoice Query    │   │  • Vendor ID        │   │  • Keyword scan     │
+            │  • Contract Query   │   │  • Invoice #s       │   │    (urgent, escal.) │
+            │  • Technical Issue  │   │  • Reference #s     │   │  • Tone analysis    │
+            │  • Access Issue     │   │  • Dates            │   │    (angry/neutral)  │
+            │  • Compliance Docs  │   │  • Requested Action │   │  • Priority signal  │
+            │  • General Inquiry  │   │                     │   │                     │
+            └────────┬────────────┘   └────────┬────────────┘   └────────┬────────────┘
+                     │                         │                         │
+                     └─────────────────────────┼─────────────────────────┘
+                                               │
+                                               ▼
+                                ┌──────────────────────────────┐
+                                │     CONFIDENCE SCORING       │
+                                │         MODULE               │
+                                │                              │
+                                │  • Score each extraction     │
+                                │  • Score classification      │
+                                │  • Aggregate confidence      │
+                                │  • Tag: HIGH / MEDIUM / LOW  │
+                                └──────────────┬───────────────┘
+                                               │
+                                               ▼
+                                       ◇─────────────────◇
+                                       │  CONFIDENCE      │
+                                       │  THRESHOLD       │
+                                       │  CHECK           │
+                                       ◇────────┬────────◇
+                                                │
+                                ┌───────────────┼───────────────┐
+                                │               │               │
+                                ▼               ▼               ▼
+                          ┌──────────┐   ┌──────────┐   ┌──────────────┐
+                          │  HIGH    │   │  MEDIUM  │   │  LOW         │
+                          │Confidence│   │Confidence│   │ Confidence   │
+                          │          │   │          │   │              │
+                          │Auto-     │   │Draft for │   │Route to      │
+                          │proceed   │   │review    │   │Human Triage  │
+                          └────┬─────┘   └────┬─────┘   └──────┬───────┘
+                               │              │                │
+                               └──────────────┼────────────────┘
+                                              │
+                                              ▼
+                        ┌─────────────────────────────────────────┐
+                        │     KNOWLEDGE RETRIEVAL (RAG)           │
+                        │                                         │
+                        │  • Query Knowledge Base / Document Store│
+                        │  • Retrieve SOPs, contract refs, FAQs   │
+                        │  • Past similar ticket resolutions      │
+                        │  • Approved email templates              │
+                        │  • Policy & compliance guidelines        │
+                        └────────────────────┬────────────────────┘
+                                             │
+                                             ▼
+                        ┌─────────────────────────────────────────┐
+                        │     RESPONSE GENERATION ENGINE          │
+                        │                                         │
+                        │  • Draft acknowledgment emails          │
+                        │  • Draft clarification requests          │
+                        │  • Draft resolution emails               │
+                        │  • Draft escalation summaries            │
+                        │  • Draft document request emails         │
+                        │  • Use approved templates + tone rules   │
+                        │  • Anti-hallucination guardrails         │
+                        └────────────────────┬────────────────────┘
+                                             │
+                                             │ Structured AI output:
+                                             │   intent, entities, sentiment,
+                                             │   confidence, draft response
+                                             ▼
+
+════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+ LAYER 4 — ORCHESTRATION LAYER
+════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+
+                        ┌─────────────────────────────────────────┐
+                        │      ORCHESTRATION ENGINE               │
+                        │      (Middleware / Workflow Controller)  │
+                        │                                         │
+                        │  • Coordinates all system interactions  │
+                        │  • Applies business rules               │
+                        │  • Manages retries on failures          │
+                        │  • Enforces governance controls         │
+                        │  • Manages state machine transitions    │
+                        └────────────────────┬────────────────────┘
+                                             │
+                    ┌────────────────────────┬┼────────────────────────┐
+                    │                        ││                        │
+                    ▼                        ▼▼                        ▼
+    ┌──────────────────────────┐ ┌──────────────────────────┐ ┌──────────────────────────┐
+    │   BUSINESS RULES ENGINE  │ │   VENDOR MATCHING        │ │  TICKET MANAGEMENT       │
+    │                          │ │   SERVICE                │ │  SERVICE                 │
+    │  • Routing rules by      │ │                          │ │                          │
+    │    intent/category       │ │  Step 1: Email match     │ │  • Thread/ref check:     │
+    │  • Priority calculation  │ │    → Salesforce contacts │ │    existing ticket?      │
+    │    (tier + urgency +     │ │  Step 2: Vendor ID match │ │  • Create new or         │
+    │     SLA rules)           │ │    (if extracted)        │ │    update existing       │
+    │  • Escalation triggers   │ │  Step 3: Name similarity │ │  • Populate fields:      │
+    │  • Auto-send vs draft    │ │    match (with guards)   │ │    category, priority,   │
+    │    decision              │ │  Step 4: Fetch context:  │ │    assignment group,     │
+    │  • Hold/resume rules     │ │    status, tier, SLA,    │ │    description           │
+    │  • Auto-close window     │ │    contracts, contacts   │ │  • Attach email + docs   │
+    │  • Reopen detection      │ │                          │ │  • Duplicate prevention  │
+    │                          │ │                          │ │                          │
+    └────────────┬─────────────┘ └────────────┬─────────────┘ └────────────┬─────────────┘
+                 │                            │                            │
+                 └────────────────────────────┼────────────────────────────┘
+                                              │
+                                              ▼
+                              ┌───────────────────────────────┐
+                              │   SLA MONITORING &            │
+                              │   TIMER SERVICE               │
+                              │                               │
+                              │  • Track SLA per ticket       │
+                              │  • Pause SLA on hold states   │
+                              │  • Alert at 70%, 85%, 95%     │
+                              │  • Trigger auto-escalation    │
+                              │  • Log SLA events             │
+                              └───────────────┬───────────────┘
+                                              │
+                                              ▼
+
+════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+ LAYER 5 — ENTERPRISE SYSTEMS LAYER
+════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+
+    ┌──────────────────────────────────┐          ┌──────────────────────────────────┐
+    │         SALESFORCE               │          │         SERVICENOW               │
+    │    (Vendor Source of Truth)      │          │    (Ticket Workflow System)       │
+    │                                  │          │                                  │
+    │  • Vendor ID & profile           │          │  • Ticket CRUD + auto-numbering  │
+    │  • Vendor status (Active/        │          │  • State transitions:            │
+    │    Inactive/Blocked)             │          │    New → Assigned → In Progress  │
+    │  • Vendor tier / criticality     │          │    → Resolved → Closed           │
+    │  • Contract metadata             │          │  • Hold states: Awaiting Vendor, │
+    │  • SLA / category commitments    │          │    Awaiting Internal Info         │
+    │  • Payment terms                 │          │  • Reopen state management       │
+    │  • Vendor contacts               │          │  • Category / sub-category       │
+    │    (email, phone, escalation)    │          │  • Priority & impact tracking    │
+    │                                  │          │  • Assignment group management   │
+    │  [READ-ONLY for automation]      │          │  • Audit trail & history         │
+    │                                  │          │  • SLA tracking & reporting      │
+    └──────────────────────────────────┘          └──────────────────────────────────┘
+
+
+════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+ LAYER 6 — DATA LAYER
+════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+
+    ┌──────────────────────────┐  ┌──────────────────────────┐  ┌──────────────────────────┐
+    │   KNOWLEDGE BASE /       │  │   EMAIL TEMPLATE         │  │   AUDIT LOG              │
+    │   DOCUMENT STORE         │  │   STORE                  │  │   DATABASE               │
+    │                          │  │                          │  │                          │
+    │  • SOPs & procedures     │  │  • Acknowledgment tpl    │  │  • AI extraction logs    │
+    │  • Contract documents    │  │  • Clarification tpl     │  │  • Actions taken         │
+    │  • FAQ repository        │  │  • Document request tpl  │  │  • Approvals recorded    │
+    │  • Past ticket           │  │  • Resolution tpl        │  │  • Outbound message log  │
+    │    resolutions           │  │  • Escalation tpl        │  │  • State change history  │
+    │  • Policy & compliance   │  │  • Tone rules & guards   │  │  • Confidence scores     │
+    │    guidelines            │  │  • Version controlled    │  │  • Error / retry logs    │
+    │  • Vendor onboarding     │  │                          │  │  • SLA event logs        │
+    │    docs                  │  │                          │  │                          │
+    └──────────────────────────┘  └──────────────────────────┘  └──────────────────────────┘
+
+    ┌──────────────────────────┐
+    │   PROMPT / MODEL         │
+    │   VERSION STORE          │
+    │                          │
+    │  • GenAI prompt versions │
+    │  • Model config history  │
+    │  • Threshold settings    │
+    │  • Traceable & rollback  │
+    └──────────────────────────┘
+
+
+════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+ LAYER 7 — HUMAN SUPPORT LAYER
+════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+
+    ┌──────────────────────────────────┐          ┌──────────────────────────────────┐
+    │    HUMAN TRIAGE QUEUE            │          │    RESOLVER GROUPS               │
+    │                                  │          │                                  │
+    │  • Low-confidence email review   │          │  • Finance Team                  │
+    │  • Unmatched vendor handling     │          │  • Procurement Team              │
+    │  • Ambiguous intent resolution   │          │  • IT / Technical Support        │
+    │  • Draft review & approval       │          │  • Legal / Compliance            │
+    │  • Exception management          │          │  • General Support               │
+    │                                  │          │                                  │
+    └──────────────────────────────────┘          └──────────────────────────────────┘
+
+    ┌──────────────────────────────────┐          ┌──────────────────────────────────┐
+    │   AI COPILOT FOR AGENTS          │          │   MANAGER / ESCALATION OWNER     │
+    │                                  │          │                                  │
+    │  • Vendor snapshot view          │          │  • Escalation approvals          │
+    │  • Ticket history summary        │          │  • Vendor-facing escalation      │
+    │  • Extracted entity display      │          │    review                        │
+    │  • Suggested resolution steps    │          │  • Exception handling            │
+    │  • Draft response options:       │          │  • SLA breach management         │
+    │    - Clarification               │          │  • Governance oversight           │
+    │    - Document request            │          │                                  │
+    │    - Status update               │          │                                  │
+    │    - Resolution                  │          │                                  │
+    └──────────────────────────────────┘          └──────────────────────────────────┘
+
+
+════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+ LAYER 8 — OBSERVABILITY LAYER
+════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+
+    ┌──────────────────────────┐  ┌──────────────────────────┐  ┌──────────────────────────┐
+    │   MONITORING &           │  │   KPI / ANALYTICS        │  │   GOVERNANCE &           │
+    │   ALERTING               │  │   DASHBOARD              │  │   ADMIN CONSOLE          │
+    │                          │  │                          │  │                          │
+    │  • Integration health    │  │  • First Response Time   │  │  • Confidence threshold  │
+    │  • API failure detection │  │  • Resolution Time       │  │    management            │
+    │  • GenAI latency /       │  │  • SLA Adherence Rate    │  │  • Template CRUD         │
+    │    error rates           │  │  • Reopen Rate           │  │  • Prompt version mgmt   │
+    │  • Email processing      │  │  • Automation Rate       │  │  • RBAC / access control │
+    │    throughput            │  │  • Email Quality Score   │  │  • Data masking rules    │
+    │  • SLA breach alerts     │  │  • Category distribution │  │  • Attachment scan rules │
+    │  • Retry status          │  │  • Vendor satisfaction   │  │  • Audit review          │
+    │                          │  │                          │  │                          │
+    └──────────────────────────┘  └──────────────────────────┘  └──────────────────────────┘
+
+
+════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+ DATA FLOW SUMMARY — END-TO-END SEQUENCE
+════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+
+ ┌────────┐    ┌──────────┐    ┌───────────┐    ┌───────────┐    ┌─────────────┐
+ │ VENDOR │───▶│ MAILBOX  │───▶│ INGESTION │───▶│PRE-PROCESS│───▶│ GenAI       │
+ └────────┘    └──────────┘    └───────────┘    └───────────┘    │ ENGINE      │
+                                                                  │             │
+                                                                  │ • Intent    │
+                                                                  │ • Entities  │
+                                                                  │ • Sentiment │
+                                                                  │ • Confidence│
+                                                                  └──────┬──────┘
+                                                                         │
+                                                              ◇──────────┴──────────◇
+                                                              │   CONFIDENCE CHECK   │
+                                                              ◇──────────┬──────────◇
+                                                                         │
+                                                         ┌───────────────┼───────────────┐
+                                                         │               │               │
+                                                         ▼               ▼               ▼
+                                                   ┌──────────┐   ┌──────────┐   ┌──────────┐
+                                                   │  AUTO     │   │  DRAFT   │   │  HUMAN   │
+                                                   │  PROCEED  │   │  REVIEW  │   │  TRIAGE  │
+                                                   └─────┬─────┘   └─────┬────┘   └─────┬────┘
+                                                         │               │              │
+                                                         └───────────────┼──────────────┘
+                                                                         │
+                                                                         ▼
+                                              ┌──────────────────────────────────────────┐
+                                              │          ORCHESTRATION ENGINE             │
+                                              │                                          │
+                                              │  ┌────────────┐  ┌─────────────────────┐ │
+                                              │  │ VENDOR     │  │ TICKET MGMT         │ │
+                                              │  │ MATCHING   │  │ SERVICE             │ │
+                                              │  │ (Salesforce│  │ (ServiceNow         │ │
+                                              │  │  lookup)   │  │  create/update)     │ │
+                                              │  └─────┬──────┘  └──────────┬──────────┘ │
+                                              │        │                    │             │
+                                              │  ┌─────┴────────────────────┴──────┐     │
+                                              │  │     BUSINESS RULES ENGINE       │     │
+                                              │  │  • Routing  • Priority          │     │
+                                              │  │  • Escalation • Hold/Resume     │     │
+                                              │  │  • Auto-send vs Draft           │     │
+                                              │  └────────────────┬────────────────┘     │
+                                              │                   │                      │
+                                              │  ┌────────────────┴────────────────┐     │
+                                              │  │     SLA MONITOR & TIMER         │     │
+                                              │  │  • Track  • Pause  • Alert      │     │
+                                              │  └─────────────────────────────────┘     │
+                                              └──────────────────┬───────────────────────┘
+                                                                 │
+                                              ┌──────────────────┼──────────────────┐
+                                              │                  │                  │
+                                              ▼                  ▼                  ▼
+                                     ┌──────────────┐  ┌──────────────┐  ┌──────────────────┐
+                                     │  SALESFORCE   │  │  SERVICENOW  │  │  OUTBOUND EMAIL  │
+                                     │  (Read vendor │  │  (Ticket     │  │  (Ack / Update / │
+                                     │   context)    │  │   lifecycle) │  │   Resolution)    │
+                                     └──────────────┘  └──────────────┘  └────────┬─────────┘
+                                                                                  │
+                                                                                  ▼
+                                                                          ┌──────────────┐
+                                                                          │    VENDOR    │
+                                                                          │  (Receives   │
+                                                                          │   response)  │
+                                                                          └──────────────┘
+
+
+════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+ TICKET STATE MACHINE
+════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+
+                          ┌───────┐
+                          │  NEW  │
+                          └───┬───┘
+                              │ Auto-assign
+                              ▼
+                        ┌──────────┐
+                        │ ASSIGNED │
+                        └────┬─────┘
+                             │ Begin work
+                             ▼
+                       ┌─────────────┐
+                       │ IN PROGRESS │◀──────────────────────────┐
+                       └──────┬──────┘                           │
+                              │                                  │
+                    ┌─────────┼─────────┐                        │
+                    │         │         │                        │
+                    ▼         ▼         ▼                        │
+            ┌───────────┐ ┌────────────┐ ┌──────────┐           │
+            │ AWAITING  │ │ AWAITING   │ │ RESOLVED │           │
+            │ VENDOR    │ │ INTERNAL   │ └────┬─────┘           │
+            │ (SLA      │ │ INFO       │      │                 │
+            │  paused)  │ │ (SLA       │      │ Vendor confirms │
+            └─────┬─────┘ │  paused)   │      │ or auto-close   │
+                  │       └──────┬─────┘      ▼                 │
+                  │              │       ┌──────────┐           │
+                  │              │       │  CLOSED  │           │
+                  └──────┬───────┘       └────┬─────┘           │
+                         │                    │                 │
+                         │ Info received      │ Vendor replies  │
+                         │                    │ after closure   │
+                         ▼                    ▼                 │
+                   ┌───────────┐        ┌──────────┐           │
+                   │  RESUME   │───────▶│  REOPEN  │───────────┘
+                   └───────────┘        └──────────┘
+
+
+════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+ LEGEND
+════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+
+    ┌───────────┐
+    │  Box      │  = System Component / Service / Module
+    └───────────┘
+
+    ◇───────────◇  = Decision Point / Conditional Logic
+
+    ───▶           = Data Flow / Control Flow Direction
+
+    ─ ─ ─ ▶        = Optional / Async Flow
+
+    [READ-ONLY]    = No write access for automation
+
+    SLA paused     = Timer suspended during hold state
+
+════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+ INTEGRATION API MATRIX
+════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+
+    ┌────────────────────┬──────────────────┬────────────────────┬───────────────────────────┐
+    │ SOURCE             │ TARGET           │ PROTOCOL           │ PURPOSE                   │
+    ├────────────────────┼──────────────────┼────────────────────┼───────────────────────────┤
+    │ Mailbox            │ Ingestion Svc    │ IMAP/Graph API     │ Fetch inbound emails      │
+    │ Ingestion Svc      │ Pre-Processor    │ Internal Queue     │ Pass raw email payload    │
+    │ Pre-Processor      │ GenAI Engine     │ REST API           │ Send cleaned text         │
+    │ GenAI Engine       │ Knowledge Base   │ Vector DB / REST   │ RAG retrieval             │
+    │ Orchestrator       │ Salesforce       │ REST (SOQL/SOSL)   │ Vendor lookup & context   │
+    │ Orchestrator       │ ServiceNow       │ REST (Table API)   │ Ticket CRUD operations    │
+    │ Orchestrator       │ Mailbox          │ SMTP / Graph API   │ Send outbound emails      │
+    │ Orchestrator       │ Audit DB         │ Internal / REST    │ Log all actions            │
+    │ SLA Monitor        │ ServiceNow       │ REST (Table API)   │ SLA timer sync            │
+    │ SLA Monitor        │ Alerting Svc     │ Webhook / Event    │ Breach notifications      │
+    │ Admin Console      │ Template Store   │ Internal CRUD      │ Manage email templates    │
+    │ Admin Console      │ Prompt Store     │ Internal CRUD      │ Manage AI prompts         │
+    └────────────────────┴──────────────────┴────────────────────┴───────────────────────────┘
+
+
+════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+ END OF ARCHITECTURE DOCUMENT
+════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
